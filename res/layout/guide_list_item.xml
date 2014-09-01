@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#00000000"
+    >
+	
+    <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:background="#ffffff"
+	    android:layout_centerInParent="true"
+	    android:layout_margin="10dp"
+	    >
+	    
+		<ImageView 
+		    android:id="@+id/guide_head"
+		    android:layout_width="100dp"
+		    android:layout_height="160dp"
+		    android:contentDescription="@string/app_name"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignParentTop="true"
+		    android:layout_marginLeft="10dp"
+		    />
+		
+		<TextView 
+		    android:id="@+id/guide_name"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:textColor="@color/bg_gray8"
+		    android:textSize="@dimen/word_big"
+		    android:layout_toRightOf="@+id/guide_head"
+		    android:layout_alignParentTop="true"
+		    android:layout_marginTop="20dp"
+		    android:layout_marginLeft="17dp"
+		    />
+		
+		<TextView 
+		    android:id="@+id/guide_job"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:textColor="@color/bg_gray6"
+		    android:textSize="@dimen/word_small"
+		    android:layout_alignLeft="@+id/guide_name"
+		    android:layout_below="@+id/guide_name"
+		    android:layout_marginTop="5dp"
+		    />
+		
+		<TextView 
+		        android:id="@+id/guide_tag1"
+		        android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:textColor="#ffffff"
+			    android:textSize="@dimen/word_small"
+			    android:layout_alignLeft="@+id/guide_job"
+			    android:layout_below="@+id/guide_job"
+			    android:layout_marginTop="10dp"
+			    android:background="@color/bg_green"
+			    android:gravity="center"
+		        />
+		
+		<TextView 
+		        android:id="@+id/guide_tag2"
+		        android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:textColor="#ffffff"
+			    android:textSize="@dimen/word_small"
+			    android:layout_alignTop="@+id/guide_tag1"
+			    android:layout_toRightOf="@+id/guide_tag1"
+			    android:layout_marginLeft="5dp"
+			    android:background="@color/bg_green"
+			    android:gravity="center"
+		        />
+		<TextView 
+		        android:id="@+id/guide_tag3"
+		        android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:textColor="#ffffff"
+			    android:textSize="@dimen/word_small"
+			    android:layout_alignTop="@+id/guide_tag2"
+			    android:layout_toRightOf="@+id/guide_tag2"
+			    android:layout_marginLeft="5dp"
+			    android:background="@color/bg_green"
+			    android:gravity="center"
+		        />
+		
+		<ImageView 
+		    android:id="@+id/guide_star1"
+		    android:layout_width="10dp"
+		    android:layout_height="10dp"
+		    android:contentDescription="@string/app_name"
+		    android:src="@drawable/star_full"
+		    android:layout_alignLeft="@+id/guide_tag1"
+		    android:layout_below="@+id/guide_tag1"
+		    android:layout_marginTop="10dp"
+		    />
+		
+		<ImageView 
+		    android:id="@+id/guide_star2"
+		    android:layout_width="10dp"
+		    android:layout_height="10dp"
+		    android:contentDescription="@string/app_name"
+		    android:src="@drawable/star_full"
+		    android:layout_alignTop="@+id/guide_star1"
+		    android:layout_toRightOf="@+id/guide_star1"
+		    android:layout_marginLeft="2dp"
+		    />
+		
+		<ImageView 
+		    android:id="@+id/guide_star3"
+		    android:layout_width="10dp"
+		    android:layout_height="10dp"
+		    android:contentDescription="@string/app_name"
+		    android:src="@drawable/star_full"
+		    android:layout_alignTop="@+id/guide_star2"
+		    android:layout_toRightOf="@+id/guide_star2"
+		    android:layout_marginLeft="2dp"
+		    />
+		
+		<ImageView 
+		    android:id="@+id/guide_star4"
+		    android:layout_width="10dp"
+		    android:layout_height="10dp"
+		    android:contentDescription="@string/app_name"
+		    android:src="@drawable/star_full"
+		    android:layout_alignTop="@+id/guide_star3"
+		    android:layout_toRightOf="@+id/guide_star3"
+		    android:layout_marginLeft="2dp"
+		    />
+		
+		<ImageView 
+		    android:id="@+id/guide_star5"
+		    android:layout_width="10dp"
+		    android:layout_height="10dp"
+		    android:contentDescription="@string/app_name"
+		    android:src="@drawable/star_full"
+		    android:layout_alignTop="@+id/guide_star4"
+		    android:layout_toRightOf="@+id/guide_star4"
+		    android:layout_marginLeft="2dp"
+		    />
+		
+		<TextView 
+		    android:id="@+id/guide_time"
+		    android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/bg_orange"
+			android:textSize="@dimen/word_small"
+			android:layout_below="@+id/guide_tag1"
+		    android:layout_toRightOf="@+id/guide_star5"
+		    android:layout_marginLeft="45dp"
+		    android:layout_marginTop="8dp"
+		    />
+		
+		<TextView 
+		    android:id="@+id/guide_comment"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:textColor="@color/bg_green"
+		    android:textSize="@dimen/word_small"
+		    android:layout_alignLeft="@+id/guide_star1"
+		    android:layout_below="@+id/guide_star1"
+		    android:layout_marginTop="7dp"
+		    />
+		
+		<TextView
+		    android:id="@+id/guide_word"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:textColor="@color/bg_gray6"
+		    android:textSize="@dimen/word_small"
+		    android:layout_alignLeft="@+id/guide_head"
+		    android:layout_marginRight="20dp"
+		    android:layout_below="@+id/guide_head"
+		    />
+		
+		<View 
+		    android:id="@+id/guide_line"
+		    android:layout_height="1dp"
+		    android:layout_width="match_parent"
+		    android:background="@color/bg_gray2"
+		    android:layout_marginLeft="10dp"
+		    android:layout_marginRight="10dp"
+		    android:layout_marginTop="10dp"
+		    android:layout_below="@+id/guide_word"
+		    />
+		
+		<RelativeLayout 
+		    android:id="@+id/guide_temp2"
+		    android:layout_width="match_parent"
+		    android:layout_height="60dp"
+		    android:layout_below="@+id/guide_line"
+		    >
+	
+		    <TextView 
+			    android:id="@+id/guide_temp1"
+			   	android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:textColor="@color/bg_gray6"
+			    android:textSize="@dimen/word_small"
+			    android:layout_centerVertical="true"
+			    android:layout_marginLeft="15dp"
+			    android:text="@string/choose_guide_text6"
+			    />
+			
+			<ImageButton
+			    android:id="@+id/guide_play_button"
+			    android:layout_width="40dp"
+			    android:layout_height="40dp"
+			    android:layout_toRightOf="@+id/guide_temp1"
+			    android:layout_centerVertical="true"
+			    android:layout_marginLeft="10dp"
+			    android:src="@drawable/try_guide_play"
+			    android:contentDescription="@string/app_name"
+			    android:background="@null"
+			    />
+			
+			<SeekBar 
+			    android:id="@+id/guide_seekbar"
+			    android:layout_width="130dp"
+			    android:layout_height="wrap_content"
+			    android:layout_centerVertical="true"
+			    android:layout_toRightOf="@+id/guide_play_button"
+			    android:layout_marginLeft="10dp"
+			    />
+			
+			<Button 
+			    android:id="@+id/guide_choose_button"
+			    android:layout_width="60dp"
+			    android:layout_height="30dp"
+			    android:background="@drawable/round_button_orange"
+			    android:textSize="15sp"
+			    android:text="@string/choose_button_text"
+			    android:textColor="#ffffff"
+			    android:layout_centerVertical="true"
+			    android:layout_alignParentRight="true"
+			    android:layout_marginRight="10dp"
+			    />
+		    
+		</RelativeLayout>
+	    
+	</RelativeLayout>
+</RelativeLayout>

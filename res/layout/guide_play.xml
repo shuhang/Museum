@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@color/bg_gray1"
+    >
+    
+    <RelativeLayout 
+        android:id="@+id/guide_play_layout1"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/bg_green"
+        >
+        
+        <Button 
+            android:id="@+id/guide_title_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/down"
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            android:background="@null"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            />
+        
+        <Button 
+            android:id="@+id/guide_title_guide"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawableTop="@drawable/museum_guide"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:text="@string/guide_play_text1"
+            android:background="@null"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            />
+        
+        <Button 
+            android:id="@+id/guide_title_ask"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/museum_guide"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:text="@string/guide_play_text2"
+            android:background="@null"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/guide_title_guide"
+            android:layout_marginRight="10dp"
+            />
+        
+    </RelativeLayout>
+    
+    <ListView
+        android:id="@+id/guide_play_pro_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:smoothScrollbar="true"
+        android:cacheColorHint="#00000000"
+        android:listSelector="#00000000"
+        android:divider="@color/bg_gray2"
+        android:layout_below="@+id/guide_play_layout1"
+        />
+    
+    <LinearLayout
+        android:id="@+id/guide_play_bottom_layout1"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#F5F5DC"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:visibility="gone"
+        >
+        
+        <ScrollView 
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="3.0"
+            android:background="#8DEEEE"
+            >
+            
+            <TableLayout 
+                android:id="@+id/guide_play_table"
+                android:layout_width="match_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_marginTop="5dp"
+                >
+
+            </TableLayout>
+            
+        </ScrollView>
+        
+        <LinearLayout 
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:background="#F5F5DC"
+	        android:layout_weight="1.0"
+	        android:orientation="vertical"
+	        android:layout_marginLeft="2dp"
+	        >
+	        
+            <Button 
+                android:id="@+id/guide_play_button_up"
+                android:layout_width="match_parent"
+                android:layout_height="39dp"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:background="#8DEEEE"
+                android:textSize="15sp"
+                android:text="@string/guide_play_text4"
+                />
+            
+            <Button 
+                android:id="@+id/guide_play_button_down"
+                android:layout_width="match_parent"
+                android:layout_height="39dp"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:layout_marginTop="2dp"
+                android:background="#8DEEEE"
+                android:textColor="#ffffff"
+                android:text="@string/guide_play_text5"
+                />
+            
+	    </LinearLayout>
+        
+    </LinearLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/guide_play_bottom_layout2"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:background="@color/bg_green"
+        android:layout_alignParentBottom="true"
+        >
+        
+        <RelativeLayout 
+            android:id="@+id/guide_play_seekbar_layout"
+            android:layout_width="match_parent"
+        	android:layout_height="35dp"
+            >
+            
+            <SeekBar 
+                android:id="@+id/guide_play_seekbar"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:thumb="@drawable/white_progress"
+		        android:progressDrawable="@drawable/my_seekbar"
+		        android:layout_centerInParent="true"
+		        android:thumbOffset="6dp"
+		        android:padding="0dp"
+		        android:maxHeight="4dp"
+                />
+            
+        </RelativeLayout>
+        
+        <TextView 
+	        android:id="@+id/guide_play_totaltime"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/bg_milk_green"
+	        android:textSize="@dimen/word_micro"	     
+	        android:layout_marginTop="23dp"
+	        android:layout_alignParentRight="true"
+	        />
+        
+        <TextView 
+	        android:id="@+id/guide_play_nowtime"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/bg_milk_green"
+	        android:textSize="@dimen/word_micro"	     
+	        android:layout_alignTop="@+id/guide_play_totaltime"
+	        />
+
+        <ImageButton
+            android:id="@+id/guide_play_button_center"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/guide_play"
+            android:scaleType="fitCenter"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:background="@null"
+            android:contentDescription="@string/app_name"
+            />
+        
+        <Button 
+            android:id="@+id/guide_play_button_pre"
+            android:layout_width="145dp"
+            android:layout_height="35dp"
+            android:drawableLeft="@drawable/left_green"
+            android:textColor="@color/bg_milk_green"
+            android:textSize="@dimen/word_small"
+            android:background="@null"
+            android:layout_centerVertical="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:gravity="left|center"
+            android:paddingLeft="15dp"         
+            />
+        
+        <Button 
+            android:id="@+id/guide_play_button_next"
+            android:layout_width="145dp"
+            android:layout_height="35dp"
+            android:drawableRight="@drawable/right_green"
+            android:textColor="@color/bg_milk_green"
+            android:textSize="@dimen/word_small"
+            android:background="@null"
+            android:gravity="right|center"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:paddingRight="15dp"
+            />
+        
+    </RelativeLayout>
+
+</RelativeLayout>

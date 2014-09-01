@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="#F5F5DC"
+    >
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#8DEEEE"
+        >
+    </RelativeLayout>
+    
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="第二步：选择讲解时长"
+        android:textSize="15sp"
+        android:textColor="#000000"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        />
+    
+    <RelativeLayout 
+        android:id="@+id/choose_time_layout1"
+        android:layout_width="170dp"
+        android:layout_height="30dp"
+        android:background="#CCCCCC"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:clickable="true"
+        >
+        
+        <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="最少讲解"
+	        android:textSize="12sp"
+	        android:textColor="#000000"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="10dp"
+	        android:layout_alignParentLeft="true"
+	        />
+        
+        <TextView 
+            android:id="@+id/choose_time_time1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="2小时12分钟"
+	        android:textSize="12sp"
+	        android:textColor="#000000"
+	        android:layout_centerVertical="true"
+	        android:layout_marginRight="10dp"
+	        android:layout_alignParentRight="true"
+	        />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/choose_time_layout2"
+        android:layout_width="190dp"
+        android:layout_height="30dp"
+        android:background="#CCCCCC"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="20dp"
+        android:clickable="true"
+        >
+        
+        <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="快速游览"
+	        android:textSize="12sp"
+	        android:textColor="#000000"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="10dp"
+	        android:layout_alignParentLeft="true"
+	        />
+        
+        <TextView 
+            android:id="@+id/choose_time_time2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="2小时12分钟"
+	        android:textSize="12sp"
+	        android:textColor="#000000"
+	        android:layout_centerVertical="true"
+	        android:layout_marginRight="10dp"
+	        android:layout_alignParentRight="true"
+	        />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/choose_time_layout3"
+        android:layout_width="210dp"
+        android:layout_height="30dp"
+        android:background="#8DEEEE"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="20dp"
+        android:clickable="true"
+        >
+        
+        <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="普通游客"
+	        android:textSize="12sp"
+	        android:textColor="#000000"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="10dp"
+	        android:layout_alignParentLeft="true"
+	        />
+        
+        <TextView 
+            android:id="@+id/choose_time_time3"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="2小时12分钟"
+	        android:textSize="12sp"
+	        android:textColor="#000000"
+	        android:layout_centerVertical="true"
+	        android:layout_marginRight="10dp"
+	        android:layout_alignParentRight="true"
+	        />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/choose_time_layout4"
+        android:layout_width="230dp"
+        android:layout_height="30dp"
+        android:background="#CCCCCC"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="20dp"
+        android:clickable="true"
+        >
+        
+        <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="深入了解"
+	        android:textSize="12sp"
+	        android:textColor="#000000"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="10dp"
+	        android:layout_alignParentLeft="true"
+	        />
+        
+        <TextView 
+            android:id="@+id/choose_time_time4"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="2小时12分钟"
+	        android:textSize="12sp"
+	        android:textColor="#000000"
+	        android:layout_centerVertical="true"
+	        android:layout_marginRight="10dp"
+	        android:layout_alignParentRight="true"
+	        />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/choose_time_layout5"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:background="#CCCCCC"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="20dp"
+        android:clickable="true"
+        >
+        
+        <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="多多益善"
+	        android:textSize="12sp"
+	        android:textColor="#000000"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="10dp"
+	        android:layout_alignParentLeft="true"
+	        />
+        
+        <TextView 
+            android:id="@+id/choose_time_time5"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="2小时12分钟"
+	        android:textSize="12sp"
+	        android:textColor="#000000"
+	        android:layout_centerVertical="true"
+	        android:layout_marginRight="10dp"
+	        android:layout_alignParentRight="true"
+	        />
+        
+    </RelativeLayout>
+    
+    <TextView 
+        android:id="@+id/choose_time_total1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="全程讲解共2小时12分钟"
+	    android:textSize="15sp"
+	    android:textColor="#000000"
+	    android:layout_gravity="center"
+	    android:layout_marginTop="15dp"
+	    />
+    
+    <TextView 
+        android:id="@+id/choose_time_total2"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="含导游讲解90分钟，专家讲解33分钟"
+	    android:textSize="9sp"
+	    android:textColor="#CCCCCC"
+	    android:layout_gravity="center"
+	    android:layout_marginTop="5dp"
+	    />
+    
+    <Button 
+		android:id="@+id/choose_time_button"
+		android:layout_width="230dp"
+		android:layout_height="30dp"
+		android:background="@drawable/round_button_orange"
+		android:text="确定"
+		android:textSize="15sp"
+		android:textColor="#ffffff"
+		android:layout_gravity="center"
+		android:layout_marginTop="15dp"
+		/>
+
+</LinearLayout>

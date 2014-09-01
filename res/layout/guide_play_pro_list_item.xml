@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="146dp"
+    android:background="@color/bg_gray1"
+    >
+    
+    <View
+        android:id="@+id/guide_play_pro_list_item_line"
+        android:layout_width="326dp"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/bg_gray2"
+        android:layout_alignParentTop="true"
+        />
+    
+    <ImageView 
+        android:id="@+id/guide_play_pro_list_item_head"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginLeft="17dp"
+        android:contentDescription="@string/app_name"
+        />
+    
+    <TextView 
+        android:id="@+id/guide_play_pro_list_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/bg_gray8"
+        android:textSize="@dimen/word_big"
+        android:layout_toRightOf="@+id/guide_play_pro_list_item_head"
+        android:layout_marginTop="17dp"
+        android:layout_marginLeft="16dp"
+        />
+    
+    <ImageButton
+        android:id="@+id/guide_play_pro_list_item_praise_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/guide_play_pro_list_item_title"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="27dp"
+        android:src="@drawable/praise_gray"
+        android:background="@null"
+        android:contentDescription="@string/app_name"
+        />
+    
+    <TextView 
+        android:id="@+id/guide_play_pro_list_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/bg_gray6"
+        android:textSize="@dimen/word_small"
+        android:layout_alignLeft="@+id/guide_play_pro_list_item_title"
+        android:layout_below="@+id/guide_play_pro_list_item_title"
+        android:layout_marginTop="2dp"
+        />
+    
+    <TextView 
+        android:id="@+id/guide_play_pro_list_item_job"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/bg_gray6"
+        android:textSize="@dimen/word_small"
+        android:layout_alignTop="@+id/guide_play_pro_list_item_name"
+        android:layout_toRightOf="@+id/guide_play_pro_list_item_name"
+        android:layout_marginLeft="18dp"
+        />
+    
+    <TextView 
+        android:id="@+id/guide_play_pro_list_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/bg_green"
+        android:textSize="@dimen/word_small"
+        android:layout_alignLeft="@+id/guide_play_pro_list_item_name"
+        android:layout_below="@+id/guide_play_pro_list_item_name"
+        android:layout_marginTop="2dp"
+        />
+    
+    <ImageView
+        android:id="@+id/guide_play_pro_list_item_view1"
+        android:layout_width="11dp"
+        android:layout_height="11dp"
+        android:layout_below="@+id/guide_play_pro_list_item_name"
+        android:layout_toRightOf="@+id/guide_play_pro_list_item_head"
+        android:layout_marginLeft="112dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/praise_green"
+        android:background="@null"
+        android:contentDescription="@string/app_name"
+        />
+    
+    <TextView 
+        android:id="@+id/guide_play_pro_list_item_praise_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/bg_green"
+        android:textSize="@dimen/word_small"
+        android:layout_alignBottom="@+id/guide_play_pro_list_item_time"
+        android:layout_toRightOf="@+id/guide_play_pro_list_item_view1"
+        android:layout_marginLeft="6dp"
+        />
+    
+    <RelativeLayout 
+        android:id="@+id/guide_play_pro_layout1"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_below="@+id/guide_play_pro_list_item_head"
+	    android:layout_marginTop="12dp"
+        >
+        
+        <ImageButton
+	        android:id="@+id/guide_play_pro_list_item_play_button"
+	        android:layout_width="27dp"
+	        android:layout_height="27dp"
+	        android:layout_marginLeft="25dp"
+	        android:src="@drawable/pro_play"
+	        android:background="@null"
+	        android:scaleType="fitCenter"
+	        android:contentDescription="@string/app_name"
+	        android:layout_centerVertical="true"
+	        />
+	    
+	    <SeekBar 
+	        android:id="@+id/guide_play_pro_list_item_seekbar"
+	        android:layout_width="160dp"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@+id/guide_play_pro_list_item_play_button"
+	        android:layout_marginLeft="14dp"
+	        android:layout_centerVertical="true"
+	        android:thumb="@drawable/orange_progress"
+	        />
+	    
+	    <Button 
+			android:id="@+id/guide_play_pro_list_item_wait_button"
+			android:layout_width="100dp"
+			android:layout_height="match_parent"
+			android:background="@drawable/round_button_gray"
+			android:textSize="@dimen/word_small"
+			android:drawableLeft="@drawable/pro_add"
+			android:paddingLeft="7dp"
+			android:text="@string/guide_play_text3"
+			android:textColor="#ffffff"
+			android:layout_centerVertical="true"
+			android:layout_marginRight="17dp"
+			android:layout_alignParentRight="true"
+			/>
+        
+    </RelativeLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#00000000"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/guide_play_pro_layout1"
+        android:layout_marginTop="15dp"
+        />
+
+</RelativeLayout>

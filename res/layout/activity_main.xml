@@ -1,0 +1,49 @@
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_gray1"
+    tools:context=".MainActivity" >
+
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/bg_green"
+        >
+        
+        <TextView 
+            android:id="@+id/main_layout_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:text="@string/main_layout_text1"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            />
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:text="@string/main_layout_text2"
+            android:layout_toRightOf="@+id/main_layout_text1"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            />
+        
+    </RelativeLayout>
+    
+    <ListView
+        android:id="@+id/museum_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:smoothScrollbar="true"
+        android:cacheColorHint="#00000000"
+        android:listSelector="#00000000"
+        />
+
+</LinearLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/popmenu_layout"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:minHeight="40dp"
+    android:background="#00000000"
+    >
+
+    <TextView
+        android:id="@+id/popmenu_item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:textSize="14sp" 
+        android:background="@drawable/bg_pop_item"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        />
+
+</RelativeLayout>

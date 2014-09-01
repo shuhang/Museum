@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_green">#62c3d0</color>
+    <color name="bg_orange">#f08519</color>
+    <color name="bg_gray3">#cacaca</color>
+    <color name="bg_gray1">#eeeeee</color>
+    <color name="bg_gray6">#8b8b8b</color>
+    <color name="bg_gray2">#dddddd</color>
+    <color name="bg_gray8">#5d5d5d</color>
+    <color name="bg_milk_green">#b9e1eb</color>
+    
+</resources>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:background="#00000000"
+    >
+    
+    <TextView 
+        android:id="@+id/guide_play_table_row_text1"
+        android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1.0"
+	    android:textColor="#ffffff"
+	    android:gravity="center"
+	    android:clickable="true"
+        />
+    
+    <TextView 
+        android:id="@+id/guide_play_table_row_text2"
+        android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1.0"
+	    android:textColor="#ffffff"
+	    android:gravity="center"
+	    android:clickable="true"
+	    android:visibility="invisible"
+        />
+    
+    <TextView 
+        android:id="@+id/guide_play_table_row_text3"
+        android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1.0"
+	    android:textColor="#ffffff"
+	    android:gravity="center"
+	    android:clickable="true"
+	    android:visibility="invisible"
+        />
+    
+    <TextView 
+        android:id="@+id/guide_play_table_row_text4"
+        android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1.0"
+	    android:textColor="#ffffff"
+	    android:gravity="center"
+	    android:clickable="true"
+	    android:visibility="invisible"
+        />
+    
+    <TextView 
+        android:id="@+id/guide_play_table_row_text5"
+        android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1.0"
+	    android:textColor="#ffffff"
+	    android:gravity="center"
+	    android:clickable="true"
+	    android:visibility="invisible"
+        />
+    
+    <TextView 
+        android:id="@+id/guide_play_table_row_text6"
+        android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1.0"
+	    android:textColor="#ffffff"
+	    android:gravity="center"
+	    android:clickable="true"
+	    android:visibility="invisible"
+        />
+    
+</TableRow>

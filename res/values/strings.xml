@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Museum</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="main_layout_text1">当初</string>
+    <string name="main_layout_text2">博物馆有故事</string>
+	<string name="choose_guide_text1">第一步 选择导游</string>
+	<string name="choose_guide_text2">自助游</string>
+	<string name="choose_guide_text3">随意浏览博物馆，在感兴趣的展柜前输入对应编号，即可自主选择收听相关的讲解。</string>
+	<string name="choose_guide_text4">本选项适合发烧级爱好者或随意逛逛的游客。</string>
+	<string name="choose_guide_text5">确定</string>
+	<string name="choose_guide_text6">试听</string>
+	<string name="choose_button_text">选定</string>
+	<string name="guide_play_text1">导游</string>
+	<string name="guide_play_text2">提问</string>
+	<string name="guide_play_text3">添加播放</string>
+	<string name="guide_play_text4">上一展厅</string>
+	<string name="guide_play_text5">下一展厅</string>
+    
+</resources>
