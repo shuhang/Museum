@@ -59,14 +59,13 @@ public class PopMenu
         	popupWindow = new PopupWindow( view, LayoutParams.WRAP_CONTENT, ( int )( width * 1.3 ) );
         }
         //popupWindow = new PopupWindow( view, context.getResources().getDimensionPixelSize( R.dimen.popmenu_width ), LayoutParams.WRAP_CONTENT );
-        // �����Ϊ�˵��������Back��Ҳ��ʹ����ʧ�����Ҳ�����Ӱ����ı�����������ģ�
         popupWindow.setBackgroundDrawable( new BitmapDrawable() );
 	}
 	public void setOnItemClickListener( OnItemClickListener listener ) 
 	{
 		listView.setOnItemClickListener( listener );
 	}
-	//����б��ȡ����б���Ա�����б���
+
 	public void addItems( List< String > items ) 
 	{
 		String maxString = "";
@@ -78,30 +77,27 @@ public class PopMenu
 				maxString = new String( s );
 			}
 		}
-		widthText.setText( maxString + "�溽" );
+		widthText.setText( maxString );
 	}
-	//������Ӳ˵���
+
 	public void addItem( String item )
 	{
 		itemList.add( item );
 	}
-	//����ʽ ���� pop�˵� parent ���½�
+
 	public void showAsDropDown( View parent ) 
 	{
 		popupWindow.showAsDropDown( parent, 0, context.getResources().getDimensionPixelSize( R.dimen.popmenu_yoff ) );
-		// ʹ��ۼ�
         popupWindow.setFocusable( true );
-        // ����������������ʧ
         popupWindow.setOutsideTouchable( true );
-        //ˢ��״̬
         popupWindow.update();
 	}
-	//���ز˵�
+
 	public void dismiss() 
 	{
 		popupWindow.dismiss();
 	}
-	// ������
+
 	private class PopAdapter extends BaseAdapter
 	{
 		public int getCount() 
