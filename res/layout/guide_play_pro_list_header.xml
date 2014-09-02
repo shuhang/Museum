@@ -52,13 +52,13 @@
         android:layout_height="wrap_content"
         android:src="@drawable/image_biger"
         android:contentDescription="@string/app_name"
-        android:layout_alignRight="@+id/guide_play_pro_list_header_image"
-        android:layout_alignBottom="@+id/guide_play_pro_list_header_image"
-        android:layout_marginRight="6dp"
-        android:layout_marginBottom="6dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="82dp"
+        android:layout_marginRight="32dp"
         />
     
     <View 
+        android:id="@+id/below_add_image_line"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/bg_gray2"

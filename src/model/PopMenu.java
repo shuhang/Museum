@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -49,7 +50,14 @@ public class PopMenu
         listView.setFocusable( true );
         
         int width = ( int ) ( Information.ScreenWidth * 0.6 );
-        popupWindow = new PopupWindow( view, width, ( int )( width * 1.3 ) );
+        if( symbol == 0 )
+        {
+	        popupWindow = new PopupWindow( view, width, ( int )( width * 1.3 ) );
+        }
+        else
+        {
+        	popupWindow = new PopupWindow( view, LayoutParams.WRAP_CONTENT, ( int )( width * 1.3 ) );
+        }
         //popupWindow = new PopupWindow( view, context.getResources().getDimensionPixelSize( R.dimen.popmenu_width ), LayoutParams.WRAP_CONTENT );
         // �����Ϊ�˵��������Back��Ҳ��ʹ����ʧ�����Ҳ�����Ӱ����ı�����������ģ�
         popupWindow.setBackgroundDrawable( new BitmapDrawable() );

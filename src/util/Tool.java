@@ -65,7 +65,7 @@ public class Tool
         int oldHeight = options.outHeight;
 
         options.inSampleSize = oldWidth / width;
-        if( width * 1.0 / oldWidth * oldHeight < height )
+        if( oldWidth * 1.0 / width * height > oldHeight )
         {
         	options.inSampleSize = oldHeight / height;
         }
@@ -90,7 +90,7 @@ public class Tool
         Matrix matrix = new Matrix();
         float scaleWidth = ( ( float ) Information.ScreenWidth / width );
         matrix.postScale( scaleWidth, scaleWidth );
-        return Bitmap.createBitmap( oldBitmap, 0, 0, width, height, matrix, true );
+        return Bitmap.createBitmap( oldBitmap, 0, 0, width, height, matrix, false );
     }
 	/**
 	 * 截取指定大小图片
@@ -104,13 +104,6 @@ public class Tool
 		Bitmap resizeBitmap = resizeImageToSmall( path, width, height );
 		final int oldWidth = resizeBitmap.getWidth();
 		final int oldHeight = resizeBitmap.getHeight();
-		if( width * 1.0 / oldWidth * oldHeight > height )
-		{
-			return Bitmap.createBitmap( resizeBitmap, ( oldWidth - width ) / 2, 0, width, height );
-		}
-		else
-		{
-			return Bitmap.createBitmap( resizeBitmap, 0, ( oldHeight - height ) / 2, width, height );
-		}
+		return Bitmap.createBitmap( resizeBitmap, Math.abs( ( oldWidth - width ) / 2 ), Math.abs( ( oldHeight - height ) / 2 ), width, height );
 	}
 }

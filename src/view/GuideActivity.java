@@ -16,6 +16,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
@@ -310,7 +311,7 @@ public class GuideActivity extends Activity
 				public void onStartTrackingTouch( SeekBar seekBar ) {}
 				public void onStopTrackingTouch( SeekBar seekBar ) 
 				{
-					guideProgress = seekBar.getProgress() / 100.0 * placeEntity.getLength() + 2;
+					guideProgress = seekBar.getProgress() / 100.0 * placeEntity.getLength();
 					judgeBetweenPoint();
 					try
 					{						
@@ -342,7 +343,6 @@ public class GuideActivity extends Activity
 					LayoutInflater inflater = LayoutInflater.from( GuideActivity.this );  
 					View view = inflater.inflate( R.layout.show_big_image, null );
 					ImageView image = ( ImageView ) view.findViewById( R.id.big_image );
-					
 					bigBitmap = Tool.resizeImageToBig( Information.RootPath + partEntity.getImageUrl() );
 					image.setImageBitmap( bigBitmap );
 					image.setOnClickListener
@@ -370,7 +370,6 @@ public class GuideActivity extends Activity
 								{
 									bigBitmap.recycle();
 									bigBitmap = null;
-									System.gc();
 								}
 							}
 						}
@@ -609,7 +608,7 @@ public class GuideActivity extends Activity
 			imageView.setImageResource( R.drawable.point );
 			LayoutParams params = new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT );
 			params.addRule( RelativeLayout.CENTER_VERTICAL );
-			params.leftMargin = ( int )( partEntity.getStart() * Information.ScreenWidth * 1.0 / placeEntity.getLength() - 5 );
+			params.leftMargin = ( int )( partEntity.getStart() * 1.0 / placeEntity.getLength() * 614 + 39 + 5 );
 			imageView.setLayoutParams( params );
 			seekBarLayout.addView( imageView );
 			
@@ -619,10 +618,17 @@ public class GuideActivity extends Activity
 			textView.setTextColor( this.getResources().getColor( R.color.bg_milk_green ) );
 			LayoutParams params1 = new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT );
 			params1.addRule( RelativeLayout.ALIGN_PARENT_TOP );
-			params1.leftMargin = ( int )( partEntity.getStart() * Information.ScreenWidth * 1.0 / placeEntity.getLength() - 6 );
+			params1.leftMargin = ( int )( partEntity.getStart() * 1.0 / placeEntity.getLength() * 614 + 39 + 7 + 2 );
 			textView.setLayoutParams( params1 );
 			seekBarLayout.addView( textView );
 		}
+		ImageView imageView = new ImageView( this );
+		imageView.setImageResource( R.drawable.point );
+		LayoutParams params = new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT );
+		params.addRule( RelativeLayout.CENTER_VERTICAL );
+		params.leftMargin = ( int )( placeEntity.getLength() * 1.0 / 2 / placeEntity.getLength() * 614 + 39 + 7 );
+		imageView.setLayoutParams( params );
+		seekBarLayout.addView( imageView );
 	}
 	/**
 	 * 显示下一个展厅
@@ -705,7 +711,27 @@ public class GuideActivity extends Activity
 		
 		int width = ( int ) ( Information.ScreenWidth * 0.375 );
 		int height = width * 2 / 3;
-		smallBitmap = Tool.cutImage( Information.RootPath + partEntity.getImageUrl(), width, height );
+		//smallBitmap = Tool.cutImage( Information.RootPath + partEntity.getImageUrl(), width, height );
+		//headerImage.setImageBitmap( smallBitmap );
+		BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;//不加载bitmap到内存中
+        BitmapFactory.decodeResource( this.getResources(), R.drawable.main, options );
+        int oldWidth = options.outWidth;
+        int oldHeight = options.outHeight;
+
+        options.inSampleSize = oldWidth / width;
+        if( oldWidth * 1.0 / width * height > oldHeight )
+        {
+        	options.inSampleSize = oldHeight / height;
+        }
+        
+        options.inDither = false;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        options.inJustDecodeBounds = false;
+        Bitmap resizeBitmap = BitmapFactory.decodeResource( this.getResources(), R.drawable.main, options );
+        oldWidth = resizeBitmap.getWidth();
+        oldHeight = resizeBitmap.getHeight();
+		smallBitmap =  Bitmap.createBitmap( resizeBitmap, Math.abs( ( oldWidth - width ) / 2 ), Math.abs( ( oldHeight - height ) / 2 ), width, height );
 		headerImage.setImageBitmap( smallBitmap );
 	}
 	/**

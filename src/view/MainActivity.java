@@ -39,8 +39,6 @@ public class MainActivity extends Activity
 //		Resources r = this.getResources();
 //		float px = TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_DIP, 14, r.getDisplayMetrics() );
 //		System.out.println( "AAAAAAAAAAAAAAAAAAA:" + px );
-//		File file = new File( "" );
-//		
 		
 		init();
 	}

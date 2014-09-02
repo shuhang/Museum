@@ -161,15 +161,15 @@ public class GuidePlayListAdapter extends BaseAdapter
 				holder.waitButton.setBackgroundResource( R.drawable.round_button_orange );
 				holder.waitButton.setText( "等待播放" );
 				Drawable temp = context.getResources().getDrawable( R.drawable.pro_wait );
-				temp.setBounds( 9, 9, 30, 30 );
+				temp.setBounds( 0, 0, 40, 40 );
 				holder.waitButton.setCompoundDrawables( temp, null, null, null );
 			}
 			else
 			{
 				holder.waitButton.setBackgroundResource( R.drawable.round_button_gray );
 				holder.waitButton.setText( "添加播放" );
-				Drawable temp = context.getResources().getDrawable( R.drawable.pro_wait );
-				temp.setBounds( 9, 9, 30, 30 );
+				Drawable temp = context.getResources().getDrawable( R.drawable.pro_add );
+				temp.setBounds( 0, 0, 40, 40 );
 				holder.waitButton.setCompoundDrawables( temp, null, null, null );
 			}
 			
@@ -179,15 +179,24 @@ public class GuidePlayListAdapter extends BaseAdapter
 				{
 					public void onClick( View view )
 					{
+						Button button = ( Button ) view;
 						if( GuideActivity.proPlayMap.get( index ) == true )
 						{
 							GuideActivity.proPlayMap.put( index, false );
-							view.setBackgroundResource( R.drawable.round_button_gray );
+							button.setBackgroundResource( R.drawable.round_button_gray );
+							button.setText( "添加播放" );
+							Drawable temp = context.getResources().getDrawable( R.drawable.pro_add );
+							temp.setBounds( 0, 0, 40, 40 );
+							button.setCompoundDrawables( temp, null, null, null );
 						}
 						else
 						{
 							GuideActivity.proPlayMap.put( index, true );
-							view.setBackgroundResource( R.drawable.round_button_orange );
+							button.setBackgroundResource( R.drawable.round_button_orange );
+							button.setText( "等待播放" );
+							Drawable temp = context.getResources().getDrawable( R.drawable.pro_wait );
+							temp.setBounds( 0, 0, 40, 40 );
+							button.setCompoundDrawables( temp, null, null, null );
 						}
 						GuideActivity.handler.sendEmptyMessage( 2 );
 					}

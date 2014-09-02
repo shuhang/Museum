@@ -8,5 +8,6 @@
     <color name="bg_gray2">#dddddd</color>
     <color name="bg_gray8">#5d5d5d</color>
     <color name="bg_milk_green">#b9e1eb</color>
+    <color name="color_transparent">#00000000</color>
     
 </resources>
