@@ -222,6 +222,7 @@
 			    android:layout_centerVertical="true"
 			    android:layout_toRightOf="@+id/guide_play_button"
 			    android:layout_marginLeft="10dp"
+			    android:thumb="@drawable/orange_progress"
 			    />
 			
 			<Button 

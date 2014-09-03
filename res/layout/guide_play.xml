@@ -152,10 +152,8 @@
 		        android:thumb="@drawable/white_progress"
 		        android:progressDrawable="@drawable/my_seekbar"
 		        android:layout_centerInParent="true"
-		        android:thumbOffset="6dp"
+		        android:thumbOffset="7dp"
 		        android:maxHeight="4dp"
-		        android:layout_marginLeft="10dp"
-		        android:layout_marginRight="10dp"
                 />
             
         </RelativeLayout>

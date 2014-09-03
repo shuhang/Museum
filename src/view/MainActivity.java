@@ -11,8 +11,8 @@ import util.Information;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -27,15 +27,15 @@ public class MainActivity extends Activity
 	private MuseumListAdapter museumListAdapter;
 	private List< MuseumEntity > museumList = new ArrayList< MuseumEntity >();
 	
-	@SuppressWarnings("deprecation")
 	protected void onCreate( Bundle savedInstanceState ) 
 	{
 		super.onCreate( savedInstanceState );
 		
-		WindowManager wm = this.getWindowManager();
-		Information.ScreenWidth = wm.getDefaultDisplay().getWidth();
-		Information.ScreenHeight = wm.getDefaultDisplay().getHeight();
-		
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		Information.ScreenDensity = dm.density;
+		Information.ScreenWidth = dm.widthPixels;
+		Information.ScreenHeight = dm.heightPixels;
+		System.out.println( dm.density + ":" + dm.densityDpi + ":" + dm.scaledDensity + ":" + dm.heightPixels + ":" + dm.widthPixels + ":" + dm.xdpi );
 //		Resources r = this.getResources();
 //		float px = TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_DIP, 14, r.getDisplayMetrics() );
 //		System.out.println( "AAAAAAAAAAAAAAAAAAA:" + px );

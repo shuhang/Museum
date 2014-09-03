@@ -90,7 +90,7 @@ public class GuidePlayListAdapter extends BaseAdapter
 		
 		final int index = position;
 		final ProEntity entity = proList.get( position );
-		int width = Information.ScreenWidth * 68 / 360;
+		int width = ( int ) ( 68 * Information.ScreenDensity );
 		holder.headView.setImageBitmap( Tool.resizeImageToSmall( Information.RootPath + entity.getImageUrl(), width, width ) );
 		holder.nameText.setText( entity.getExpertName() );
 		holder.jobText.setText( entity.getExpertTitle() );
@@ -161,7 +161,7 @@ public class GuidePlayListAdapter extends BaseAdapter
 				holder.waitButton.setBackgroundResource( R.drawable.round_button_orange );
 				holder.waitButton.setText( "等待播放" );
 				Drawable temp = context.getResources().getDrawable( R.drawable.pro_wait );
-				temp.setBounds( 0, 0, 40, 40 );
+				temp.setBounds( 0, 0, ( int )( 20 * Information.ScreenDensity ), ( int )( 20 * Information.ScreenDensity ) );
 				holder.waitButton.setCompoundDrawables( temp, null, null, null );
 			}
 			else
@@ -169,7 +169,7 @@ public class GuidePlayListAdapter extends BaseAdapter
 				holder.waitButton.setBackgroundResource( R.drawable.round_button_gray );
 				holder.waitButton.setText( "添加播放" );
 				Drawable temp = context.getResources().getDrawable( R.drawable.pro_add );
-				temp.setBounds( 0, 0, 40, 40 );
+				temp.setBounds( 0, 0, ( int )( 20 * Information.ScreenDensity ), ( int )( 20 * Information.ScreenDensity ) );
 				holder.waitButton.setCompoundDrawables( temp, null, null, null );
 			}
 			
@@ -186,7 +186,7 @@ public class GuidePlayListAdapter extends BaseAdapter
 							button.setBackgroundResource( R.drawable.round_button_gray );
 							button.setText( "添加播放" );
 							Drawable temp = context.getResources().getDrawable( R.drawable.pro_add );
-							temp.setBounds( 0, 0, 40, 40 );
+							temp.setBounds( 0, 0, ( int )( 20 * Information.ScreenDensity ), ( int )( 20 * Information.ScreenDensity ) );
 							button.setCompoundDrawables( temp, null, null, null );
 						}
 						else
@@ -195,7 +195,7 @@ public class GuidePlayListAdapter extends BaseAdapter
 							button.setBackgroundResource( R.drawable.round_button_orange );
 							button.setText( "等待播放" );
 							Drawable temp = context.getResources().getDrawable( R.drawable.pro_wait );
-							temp.setBounds( 0, 0, 40, 40 );
+							temp.setBounds( 0, 0, ( int )( 20 * Information.ScreenDensity ), ( int )( 20 * Information.ScreenDensity ) );
 							button.setCompoundDrawables( temp, null, null, null );
 						}
 						GuideActivity.handler.sendEmptyMessage( 2 );

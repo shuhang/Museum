@@ -75,6 +75,7 @@ public class Tool
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile( path, options );
     }
+	
 	/**
 	 * 缩放图片到指定大小
 	 * @param path

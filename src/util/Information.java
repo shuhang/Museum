@@ -8,4 +8,5 @@ public class Information
 	
 	public static int ScreenWidth;
 	public static int ScreenHeight;
+	public static float ScreenDensity;
 }
