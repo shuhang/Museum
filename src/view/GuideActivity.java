@@ -1,5 +1,6 @@
 package view;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
@@ -16,7 +17,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
@@ -158,8 +158,11 @@ public class GuideActivity extends Activity
 						isProPlaying = true;
 						audioUrl = Information.RootPath + MuseumEntity.ProMap.get( partEntity.getTags()[ 0 ] ).get( proPlayIndex ).getAudioUrl();
 						proPlayLength = MuseumEntity.ProMap.get( partEntity.getTags()[ 0 ] ).get( proPlayIndex ).getLength();
-
-						MySeekBar.getInstance().init();
+	
+						MySeekBar.getInstance().seekBarMap.get( proPlayIndex ).setProgressDrawable( GuideActivity.this.getResources().getDrawable( R.drawable.pro_seekbar_gray ) );
+						MySeekBar.getInstance().seekBarMap.get( proPlayIndex ).setThumb( GuideActivity.this.getResources().getDrawable( R.drawable.gray_progress ) );
+						MySeekBar.getInstance().seekBarMap.get( proPlayIndex ).setMax( proPlayLength );
+						MySeekBar.getInstance().init();				
 					}
 	
 					adapter.notifyDataSetChanged();
@@ -185,6 +188,7 @@ public class GuideActivity extends Activity
 				case 6 : //导游播放按钮响应，停止专家播放
 					proPlayIndex = -1;
 					isProPlaying = false;
+					MySeekBar.getInstance().stopPlay();
 					adapter.notifyDataSetChanged();
 					break;
 				case 7 : //更新导游播放进度条
@@ -578,13 +582,16 @@ public class GuideActivity extends Activity
 		final int count = placeEntity.getPartList().size();
 		for( int i = 0; i < count - 1; i ++ )
 		{
-			if( placeEntity.getPartList().get( i ).getStart() <= guideProgress && placeEntity.getPartList().get( i + 1 ).getStart() > guideProgress && partIndex != i )
+			if( placeEntity.getPartList().get( i ).getStart() <= guideProgress && placeEntity.getPartList().get( i + 1 ).getStart() > guideProgress )
 			{
-				symbol = true;
-				partIndex = i;
-				partEntity = placeEntity.getPartList().get( partIndex );
-				handler.sendEmptyMessage( 0 );
-				break;
+				if( partIndex != i )
+				{
+					symbol = true;
+					partIndex = i;
+					partEntity = placeEntity.getPartList().get( partIndex );
+					handler.sendEmptyMessage( 0 );
+				}
+				return;
 			}
 		}
 		if( symbol == false && partIndex != count - 1 )
@@ -608,7 +615,12 @@ public class GuideActivity extends Activity
 			imageView.setImageResource( R.drawable.point );
 			LayoutParams params = new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT );
 			params.addRule( RelativeLayout.CENTER_VERTICAL );
-			params.leftMargin = ( int )( ( partEntity.getStart() * 1.0 / placeEntity.getLength() * 654 * 4 / 9 + 26 * 4.0 / 9 ) );
+			double value = ( partEntity.getStart() * 1.0 * 654 / placeEntity.getLength() + 26 ) * Information.ScreenWidth / 720;
+			if( i == 0 )
+			{
+				value = partEntity.getStart() * 1.0 * 654 / placeEntity.getLength() * Information.ScreenWidth / 720 + 13 * Information.ScreenDensity;
+			}
+			params.leftMargin = ( new BigDecimal( value ).setScale( 0, BigDecimal.ROUND_HALF_UP ) ).intValue();
 			imageView.setLayoutParams( params );
 			seekBarLayout.addView( imageView );
 			
@@ -618,7 +630,12 @@ public class GuideActivity extends Activity
 			textView.setTextColor( this.getResources().getColor( R.color.bg_milk_green ) );
 			LayoutParams params1 = new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT );
 			params1.addRule( RelativeLayout.ALIGN_PARENT_TOP );
-			params1.leftMargin = ( int )( ( partEntity.getStart() * 1.0 / placeEntity.getLength() * 654 + 27 ) );
+			value = ( partEntity.getStart() * 1.0 / placeEntity.getLength() * 654  + 27 ) * Information.ScreenWidth / 720;
+			if( i == 0 )
+			{
+				value = partEntity.getStart() * 1.0 / placeEntity.getLength() * 654 * Information.ScreenWidth / 720 + 13.5 * Information.ScreenDensity;
+			}
+			params1.leftMargin = ( new BigDecimal( value ).setScale( 0, BigDecimal.ROUND_HALF_UP ) ).intValue();
 			textView.setLayoutParams( params1 );
 			seekBarLayout.addView( textView );
 		}
@@ -704,29 +721,7 @@ public class GuideActivity extends Activity
 		
 		int width = ( int ) ( Information.ScreenWidth * 0.375 );
 		int height = width * 2 / 3;
-		//smallBitmap = Tool.cutImage( Information.RootPath + partEntity.getImageUrl(), width, height );
-		//headerImage.setImageBitmap( smallBitmap );
-		BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;//不加载bitmap到内存中
-        BitmapFactory.decodeResource( this.getResources(), R.drawable.place, options );
-        int oldWidth = options.outWidth;
-        int oldHeight = options.outHeight;
-        System.out.println( oldWidth + ":" + oldHeight );
-        options.inSampleSize = oldWidth / width;
-        if( oldWidth * 1.0 / width * height > oldHeight )
-        {
-        	options.inSampleSize = oldHeight / height;
-        }
-        System.out.println( options.inSampleSize );
-        options.inDither = false;
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
-        options.inJustDecodeBounds = false;
-        Bitmap resizeBitmap = BitmapFactory.decodeResource( this.getResources(), R.drawable.place, options );
-        oldWidth = resizeBitmap.getWidth();
-        oldHeight = resizeBitmap.getHeight();
-        System.out.println( oldWidth + ":" + oldHeight );
-        System.out.println( width + ":" + height );
-		smallBitmap =  Bitmap.createBitmap( resizeBitmap, Math.abs( ( oldWidth - width ) / 2 ), Math.abs( ( oldHeight - height ) / 2 ), width, height );
+		smallBitmap = Tool.resizeBitmap( Information.RootPath + partEntity.getImageUrl(), width, height );
 		headerImage.setImageBitmap( smallBitmap );
 	}
 	/**

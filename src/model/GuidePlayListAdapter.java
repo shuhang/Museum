@@ -142,6 +142,8 @@ public class GuidePlayListAdapter extends BaseAdapter
 		);
 		
 		SeekBar seekBar = ( SeekBar ) convertView.findViewById( R.id.guide_play_pro_list_item_seekbar );
+		seekBar.setProgressDrawable( context.getResources().getDrawable( R.drawable.pro_seekbar_gray ) );
+		seekBar.setThumb( context.getResources().getDrawable( R.drawable.gray_progress ) );
 		if( index != GuideActivity.proPlayIndex )
 		{
 			seekBar.setProgress( 0 );

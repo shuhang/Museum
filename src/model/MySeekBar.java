@@ -94,7 +94,7 @@ public class MySeekBar
 	}
 	
 	private void addListener()
-	{
+	{	
 		seekBarMap.get( GuideActivity.proPlayIndex ).setOnSeekBarChangeListener
 		(
 			new OnSeekBarChangeListener()
@@ -103,7 +103,7 @@ public class MySeekBar
 				public void onStartTrackingTouch( SeekBar seekBar ) {}
 				public void onStopTrackingTouch( SeekBar seekBar ) 
 				{
-					progress = seekBar.getProgress() / 100.0 * GuideActivity.proPlayLength;
+					progress = seekBar.getProgress();
 					if( proPlayer != null )
 					{
 						try
@@ -125,7 +125,7 @@ public class MySeekBar
 	{
 		if( GuideActivity.isProPlaying && GuideActivity.proPlayIndex != -1 )
 		{
-			seekBarMap.get( GuideActivity.proPlayIndex ).setProgress( ( int )( progress * 100.0 / GuideActivity.proPlayLength ) );
+			seekBarMap.get( GuideActivity.proPlayIndex ).setProgress( ( int ) progress );
 		}
 	}
 	

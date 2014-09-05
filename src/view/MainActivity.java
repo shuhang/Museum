@@ -35,7 +35,6 @@ public class MainActivity extends Activity
 		Information.ScreenDensity = dm.density;
 		Information.ScreenWidth = dm.widthPixels;
 		Information.ScreenHeight = dm.heightPixels;
-		System.out.println( dm.density + ":" + dm.densityDpi + ":" + dm.scaledDensity + ":" + dm.heightPixels + ":" + dm.widthPixels + ":" + dm.xdpi );
 //		Resources r = this.getResources();
 //		float px = TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_DIP, 14, r.getDisplayMetrics() );
 //		System.out.println( "AAAAAAAAAAAAAAAAAAA:" + px );

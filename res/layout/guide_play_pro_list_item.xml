@@ -130,7 +130,9 @@
 	        android:layout_toRightOf="@+id/guide_play_pro_list_item_play_button"
 	        android:layout_marginLeft="14dp"
 	        android:layout_centerVertical="true"
-	        android:thumb="@drawable/orange_progress"
+	        android:thumb="@drawable/gray_progress"
+	        android:maxHeight="4dp"
+	        android:thumbOffset="7dp"
 	        />
 	    
 	    <Button 

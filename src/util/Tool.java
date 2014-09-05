@@ -75,7 +75,22 @@ public class Tool
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile( path, options );
     }
-	
+	/**
+	 * 
+	 * @param path
+	 * @param width
+	 * @param height
+	 * @return
+	 */
+	public static Bitmap resizeBitmap( String path, int width, int height )
+	{
+		Bitmap oldBitmap = BitmapFactory.decodeFile( path );
+		int oldWidth = oldBitmap.getWidth();
+    	int oldHeight = oldBitmap.getHeight();
+        Matrix matrix = new Matrix();
+        matrix.postScale( ( float ) width / oldWidth, ( float ) height / oldHeight );
+        return Bitmap.createBitmap( oldBitmap, 0, 0, oldWidth, oldHeight, matrix, false );
+	}
 	/**
 	 * 缩放图片到指定大小
 	 * @param path
