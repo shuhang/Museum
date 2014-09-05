@@ -106,7 +106,7 @@ public class GuideActivity extends Activity
 	private Bitmap smallBitmap = null;
 	private Bitmap bigBitmap = null;
 	private Dialog dialog;
-	@SuppressLint("HandlerLeak")
+	@SuppressLint({ "HandlerLeak" })
 	protected void onCreate( Bundle savedInstanceState ) 
 	{
 		super.onCreate( savedInstanceState );
@@ -158,13 +158,9 @@ public class GuideActivity extends Activity
 						isProPlaying = true;
 						audioUrl = Information.RootPath + MuseumEntity.ProMap.get( partEntity.getTags()[ 0 ] ).get( proPlayIndex ).getAudioUrl();
 						proPlayLength = MuseumEntity.ProMap.get( partEntity.getTags()[ 0 ] ).get( proPlayIndex ).getLength();
-	
-						MySeekBar.getInstance().seekBarMap.get( proPlayIndex ).setProgressDrawable( GuideActivity.this.getResources().getDrawable( R.drawable.pro_seekbar_gray ) );
-						MySeekBar.getInstance().seekBarMap.get( proPlayIndex ).setThumb( GuideActivity.this.getResources().getDrawable( R.drawable.gray_progress ) );
 						MySeekBar.getInstance().seekBarMap.get( proPlayIndex ).setMax( proPlayLength );
 						MySeekBar.getInstance().init();				
 					}
-	
 					adapter.notifyDataSetChanged();
 					MySeekBar.getInstance().startPlay();
 					break;

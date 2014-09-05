@@ -141,12 +141,24 @@ public class GuidePlayListAdapter extends BaseAdapter
 			}
 		);
 		
-		SeekBar seekBar = ( SeekBar ) convertView.findViewById( R.id.guide_play_pro_list_item_seekbar );
-		seekBar.setProgressDrawable( context.getResources().getDrawable( R.drawable.pro_seekbar_gray ) );
-		seekBar.setThumb( context.getResources().getDrawable( R.drawable.gray_progress ) );
+		SeekBar seekBar = ( SeekBar ) convertView.findViewById( R.id.guide_play_pro_list_item_seekbar );		
 		if( index != GuideActivity.proPlayIndex )
 		{
 			seekBar.setProgress( 0 );
+			
+			seekBar.setProgressDrawable( context.getResources().getDrawable( R.drawable.seekbar_next ) );
+			
+			Drawable drawable = context.getResources().getDrawable( R.drawable.gray_progress );
+			drawable.setBounds( 0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight() );
+			seekBar.setThumb( drawable );
+		}
+		else
+		{
+			seekBar.setProgressDrawable( context.getResources().getDrawable( R.drawable.seekbar_orange ) );
+			
+			Drawable drawable = context.getResources().getDrawable( R.drawable.orange_progress );
+			drawable.setBounds( 0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight() );
+			seekBar.setThumb( drawable );
 		}
 		MySeekBar.getInstance().seekBarMap.put( index, seekBar );
 		
