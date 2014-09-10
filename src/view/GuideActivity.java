@@ -145,6 +145,7 @@ public class GuideActivity extends Activity
 				case 1 : //专家列表开始播放
 					if( GuideActivity.proPlayIndex != message.arg1 )
 					{
+						MySeekBar.getInstance().stopPlay();
 						GuideActivity.proPlayIndex = message.arg1;
 						proPlayMap.put( proPlayIndex, false );
 
