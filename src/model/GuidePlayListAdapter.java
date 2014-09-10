@@ -3,9 +3,9 @@ package model;
 import java.util.List;
 
 import util.Information;
-import util.Tool;
 import view.GuideActivity;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -90,8 +90,9 @@ public class GuidePlayListAdapter extends BaseAdapter
 		
 		final int index = position;
 		final ProEntity entity = proList.get( position );
-		int width = ( int ) ( 68 * Information.ScreenDensity );
-		holder.headView.setImageBitmap( Tool.resizeImageToSmall( Information.RootPath + entity.getImageUrl(), width, width ) );
+//		int width = ( int ) ( 68 * Information.ScreenDensity );
+//		holder.headView.setImageBitmap( Tool.resizeImageToSmall( Information.RootPath + entity.getImageUrl(), width, width ) );
+		holder.headView.setImageBitmap( BitmapFactory.decodeFile( Information.RootPath + entity.getImageUrl() ) );
 		holder.nameText.setText( entity.getExpertName() );
 		holder.jobText.setText( entity.getExpertTitle() );
 		holder.timeText.setText( entity.getTime() );

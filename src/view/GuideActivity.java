@@ -3,6 +3,7 @@ package view;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -61,6 +62,8 @@ public class GuideActivity extends Activity
 	
 	private boolean isGuide = true;
 	
+	private int guideMode;
+	
 	private PopMenu placePopMenu;
 	private PopMenu guidePopMenu;
 	private SeekBar seekBar;
@@ -114,6 +117,7 @@ public class GuideActivity extends Activity
 		placeIndex = 0;
 		partIndex = 0;
 		guideIndex = getIntent().getIntExtra( "guideIndex", 0 );
+		guideMode = getIntent().getIntExtra( "guideMode", -1 );
 		if( guideIndex == MuseumEntity.guideList.size() - 1 )
 		{
 			isGuide = false;
@@ -1071,10 +1075,23 @@ public class GuideActivity extends Activity
 	 */
 	private void updateProPlayMap( final int count )
 	{
+		List< ProEntity > proList = MuseumEntity.ProMap.get( partEntity.getTags()[ 0 ] );
 		proPlayMap.clear();
 		for( int i = 0; i < count; i ++ )
 		{
-			proPlayMap.put( i, false );
+			ProEntity entity = proList.get( i );
+			if( guideMode == 1 && Tool.judgeInProList1( entity.getName() ) )
+			{
+				proPlayMap.put( i, true );
+			}
+			else if( guideMode == 2 && Tool.judgeInProList2( entity.getName() ) )
+			{
+				proPlayMap.put( i, true );
+			}
+			else
+			{
+				proPlayMap.put( i, false );
+			}
 		}
 	}
 	/**

@@ -122,4 +122,38 @@ public class Tool
 		final int oldHeight = resizeBitmap.getHeight();
 		return Bitmap.createBitmap( resizeBitmap, Math.abs( ( oldWidth - width ) / 2 ), Math.abs( ( oldHeight - height ) / 2 ), width, height );
 	}
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static boolean judgeInProList1( String value )
+	{
+		final int count = Information.ProList1.length;
+		for( int i = 0; i < count; i ++ )
+		{
+			if( Information.ProList1[ i ].equals( value ) ) 
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static boolean judgeInProList2( String value )
+	{
+		final int count = Information.ProList2.length;
+		for( int i = 0; i < count; i ++ )
+		{
+			if( Information.ProList2[ i ].equals( value ) ) 
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 }

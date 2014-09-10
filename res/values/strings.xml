@@ -18,5 +18,9 @@
 	<string name="guide_play_text3">添加播放</string>
 	<string name="guide_play_text4">上一展厅</string>
 	<string name="guide_play_text5">下一展厅</string>
+	<string name="choose_time_text1">第二步：选择专家观点</string>
+	<string name="choose_time_text2">我们特地采访了专家学者，将在重要器物的地方插播他们的观点。</string>
+	<string name="choose_time_text3">请根据您的兴趣选择专家讲解的时长。</string>
+	<string name="choose_time_text4">不用纠结，导游过程中还可以自由增减</string>
     
 </resources>

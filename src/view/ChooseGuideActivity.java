@@ -47,6 +47,7 @@ public class ChooseGuideActivity extends Activity
 				{
 					Intent intent = new Intent( ChooseGuideActivity.this, GuideActivity.class );
 					intent.putExtra( "guideIndex", MuseumEntity.GuideList.size() );
+					intent.putExtra( "guideMode", -1 );
 					startActivity( intent );
 				}
 			}
