@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.pku.museum.R;
 
@@ -143,6 +144,34 @@ public class GuidePlayListAdapter extends BaseAdapter
 		);
 		
 		SeekBar seekBar = ( SeekBar ) convertView.findViewById( R.id.guide_play_pro_list_item_seekbar );		
+		seekBar.setClickable( true );
+		seekBar.setOnSeekBarChangeListener
+		(
+			new OnSeekBarChangeListener()
+			{
+				public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ) {}
+				public void onStartTrackingTouch( SeekBar seekBar ) {}
+				public void onStopTrackingTouch( SeekBar seekBar ) 
+				{
+					if( index == GuideActivity.proPlayIndex && GuideActivity.isProPlaying )
+					{
+						MySeekBar.progress = seekBar.getProgress();
+						if( MySeekBar.proPlayer != null )
+						{
+							try
+							{
+								MySeekBar.proPlayer.seekTo( ( int ) MySeekBar.progress * 1000 );
+							}
+							catch( Exception ex ) {}
+							if( GuideActivity.isProPlaying == false )
+							{
+								MySeekBar.getInstance().pausePlay();
+							}
+						}
+					}
+				}
+			}
+		);
 		if( index != GuideActivity.proPlayIndex )
 		{
 			seekBar.setProgress( 0 );

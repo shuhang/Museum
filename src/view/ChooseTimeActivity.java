@@ -49,7 +49,7 @@ public class ChooseTimeActivity extends Activity
 				}
 			}
 		);
-		button1.setText( "  · 我听导游讲就行，不需要专家了" );
+		button1.setText( "  · 我听导游讲就行，不需要专家了     " );
 		
 		Button button2 = ( Button ) findViewById( R.id.choose_time_button2 );
 		button2.setOnClickListener
@@ -65,8 +65,8 @@ public class ChooseTimeActivity extends Activity
 		);
 		String value = "推荐·挺有特色的，插播15分钟专家讲解吧";
 		Spannable span = new SpannableString( value );
-		span.setSpan( new AbsoluteSizeSpan( 10 ), 0, 2, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
-		span.setSpan( new AbsoluteSizeSpan( 15 ), 2, value.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE );
+		span.setSpan( new AbsoluteSizeSpan( 25 ), 0, 2, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
+		span.setSpan( new AbsoluteSizeSpan( 30 ), 2, value.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE );
 		button2.setText( span );
 		
 		Button button3 = ( Button ) findViewById( R.id.choose_time_button3 );

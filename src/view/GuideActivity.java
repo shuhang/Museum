@@ -515,19 +515,22 @@ public class GuideActivity extends Activity
 				{
 					public void run()
 					{
-						if( guideProgress - placeEntity.getLength() < 0.00001 && isGuide && isGuidePlaying )
+						if( isGuide && isGuidePlaying )
 						{
-							guideProgress += 0.1;
-							handler.sendEmptyMessage( 7 );
-							judgeAtPoint();
-						}
-						else if( isGuide && isGuidePlaying )
-						{
-							handler.sendEmptyMessage( 5 );
+							if( guideProgress < placeEntity.getLength() )
+							{
+								guideProgress += 0.1;
+								handler.sendEmptyMessage( 7 );
+								judgeAtPoint();
+							}
+							else
+							{
+								handler.sendEmptyMessage( 5 );
+								timer.cancel();
+							}
 						}
 					}
-				}
-				, 100, 100 
+				}, 100, 100 
 			);
 		}
 		catch( Exception ex ) {}
@@ -642,7 +645,7 @@ public class GuideActivity extends Activity
 		}
 	}
 	/**
-	 * 显示下一个展厅
+	 * 显示上一个展厅
 	 */
 	private void showPrePart()
 	{
@@ -652,7 +655,7 @@ public class GuideActivity extends Activity
 		updatePartView();
 	}
 	/**
-	 * 显示上一个展厅
+	 * 显示下一个展厅
 	 */
 	private void showNextPart()
 	{
@@ -730,6 +733,8 @@ public class GuideActivity extends Activity
 	 */
 	private void updatePartListView()
 	{
+		isProPlaying = false;
+		MySeekBar.getInstance().cancelTimer();
 		proPlayIndex = -1;
 		MySeekBar.getInstance().seekBarMap.clear();
 		MySeekBar.getInstance().stopPlay();
@@ -1059,7 +1064,6 @@ public class GuideActivity extends Activity
 		if( placeIndex < MuseumEntity.placeList.size() - 1 )
 		{
 			placeIndex ++;
-			
 			updatePlace();
 		}
 		else

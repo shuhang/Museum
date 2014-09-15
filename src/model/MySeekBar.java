@@ -9,12 +9,11 @@ import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
 import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class MySeekBar 
 {
-	private MediaPlayer proPlayer = null;
-	private double progress = -2;
+	public static MediaPlayer proPlayer = null;
+	public static double progress = -2;
 	private Timer timer = null;
 	
 	@SuppressLint("UseSparseArrays")
@@ -71,14 +70,18 @@ public class MySeekBar
 				{
 					public void run()
 					{
-						if( progress < GuideActivity.proPlayLength && GuideActivity.isProPlaying )
+						if( GuideActivity.isProPlaying )
 						{
-							progress += 0.1;
-							GuideActivity.handler.sendEmptyMessage( 8 );
-						}
-						else if( GuideActivity.isProPlaying )
-						{
-							GuideActivity.handler.sendEmptyMessage( 4 );
+							if( progress < GuideActivity.proPlayLength )
+							{
+								progress += 0.1;
+								GuideActivity.handler.sendEmptyMessage( 8 );
+							}
+							else
+							{
+								GuideActivity.handler.sendEmptyMessage( 4 );
+								timer.cancel();
+							}
 						}
 					}
 				}
@@ -89,41 +92,11 @@ public class MySeekBar
 		{
 			ex.printStackTrace();
 		}
-		
-		addListener();
-	}
-	
-	private void addListener()
-	{	
-		seekBarMap.get( GuideActivity.proPlayIndex ).setOnSeekBarChangeListener
-		(
-			new OnSeekBarChangeListener()
-			{
-				public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ) {}
-				public void onStartTrackingTouch( SeekBar seekBar ) {}
-				public void onStopTrackingTouch( SeekBar seekBar ) 
-				{
-					progress = seekBar.getProgress();
-					if( proPlayer != null )
-					{
-						try
-						{
-							proPlayer.seekTo( ( int ) progress * 1000 );
-						}
-						catch( Exception ex ) {}
-						if( GuideActivity.isProPlaying == false )
-						{
-							pausePlay();
-						}
-					}
-				}
-			}
-		);
 	}
 	
 	public void updateSeekBar()
 	{
-		if( GuideActivity.isProPlaying && GuideActivity.proPlayIndex != -1 )
+		if( GuideActivity.isProPlaying && seekBarMap.get( GuideActivity.proPlayIndex ) != null )
 		{
 			seekBarMap.get( GuideActivity.proPlayIndex ).setProgress( ( int ) progress );
 		}
@@ -161,20 +134,6 @@ public class MySeekBar
 		{
 			ex.printStackTrace();
 		}
-	}
-	
-	public void seekTo( double timeSecond )
-	{
-		try
-		{
-			proPlayer.seekTo( ( int )( timeSecond * 1000 ) );
-			
-			if( GuideActivity.isProPlaying == false )
-			{
-				proPlayer.pause();
-			}
-		}
-		catch( Exception ex ) {}
 	}
 	
 	public void cancelTimer()
