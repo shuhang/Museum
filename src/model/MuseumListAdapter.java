@@ -50,7 +50,7 @@ public class MuseumListAdapter extends BaseAdapter
 			convertView = LayoutInflater.from( context ).inflate( R.layout.museum_list_item, null );
 			
 			holder = new ViewHolder();
-			holder.imageView = ( ImageView ) convertView.findViewById( R.id.meseum_list_item_cover );
+			holder.imageView = ( ImageView ) convertView.findViewById( R.id.meseum_list_item_cover_image );
 			holder.nameText = ( TextView ) convertView.findViewById( R.id.museum_list_item_name );
 			holder.infoText = ( TextView ) convertView.findViewById( R.id.museum_list_item_info );
 			

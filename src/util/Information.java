@@ -6,6 +6,8 @@ public class Information
 {
 	public static String RootPath = Environment.getExternalStorageDirectory().toString() + "/Museum";
 	
+	public static String Server_Url = "http://112.124.15.159:3000/places/2";
+	
 	public static int ScreenWidth;
 	public static int ScreenHeight;
 	public static float ScreenDensity;

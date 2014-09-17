@@ -176,7 +176,7 @@ public class GuidePlayListAdapter extends BaseAdapter
 		{
 			seekBar.setProgress( 0 );
 			
-			seekBar.setProgressDrawable( context.getResources().getDrawable( R.drawable.seekbar_next ) );
+			seekBar.setProgressDrawable( context.getResources().getDrawable( R.drawable.seekbar_gray_bg ) );
 			
 			Drawable drawable = context.getResources().getDrawable( R.drawable.gray_progress );
 			drawable.setBounds( 0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight() );

@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -219,6 +220,19 @@ public class GuideActivity extends Activity
 		{
 			showNoGuide();
 		}
+		
+		Button buttonAsk = ( Button ) findViewById( R.id.guide_title_ask );
+		buttonAsk.setOnClickListener
+		(
+			new OnClickListener()
+			{
+				public void onClick( View view )
+				{
+					Intent intent = new Intent( GuideActivity.this, QuestionActivity.class );
+					startActivity( intent );
+				}
+			}
+		);
 		
 		buttonChoosePlace = ( Button ) findViewById( R.id.guide_title_down );
 		buttonChoosePlace.setText( MuseumEntity.placeList.get( placeIndex ) );

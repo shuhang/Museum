@@ -3,65 +3,75 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5DC"
+    android:background="@color/bg_gray1"
     >
     
     <RelativeLayout 
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#8DEEEE"
+        android:background="@color/bg_green"
         >
+        
+        <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/title1"
+	        android:textSize="@dimen/word_big"
+	        android:textColor="#ffffff"
+	        android:layout_centerInParent="true"
+	        />
+        
     </RelativeLayout>
     
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="请全程佩戴耳机，以免影响他人，谢谢支持"
-        android:textSize="13sp"
-        android:textColor="#000000"
-        android:layout_marginTop="15dp"
+        android:text="@string/start_text1"
+        android:textSize="@dimen/word_small"
+        android:textColor="@color/bg_gray8"
+        android:layout_marginTop="36dp"
         android:layout_gravity="center"
         />
     
     <View 
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#000000"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_height="0.5dp"
+        android:background="@color/bg_gray3"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         />
     
     <ImageView 
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
     	android:layout_height="200dp"
     	android:src="@drawable/main"
     	android:contentDescription="@string/app_name"
-    	android:layout_marginTop="10dp"
-    	android:layout_marginLeft="10dp"
-    	android:layout_marginRight="10dp"
+    	android:layout_marginTop="30dp"
+    	android:layout_gravity="center"
         />
     
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="请在到达此处时点击按钮，开始导游"
-        android:textSize="15sp"
-        android:textColor="#000000"
-        android:layout_marginTop="10dp"
+        android:text="@string/start_text2"
+        android:textSize="@dimen/word_big"
+        android:textColor="@color/bg_gray8"
+        android:layout_marginTop="15dp"
         android:layout_gravity="center"
         />
     
     <Button 
 		android:id="@+id/start_guide_button"
-		android:layout_width="230dp"
-		android:layout_height="30dp"
-		android:background="@drawable/round_button_orange"
-		android:text="开始导游"
-		android:textSize="15sp"
+		android:layout_width="match_parent"
+		android:layout_height="45dp"
+		android:background="@drawable/big_round_button_orange"
+		android:text="@string/start_text3"
+        android:textSize="@dimen/word_small"
 		android:textColor="#ffffff"
-		android:layout_gravity="center"
-		android:layout_marginTop="15dp"
+		android:layout_marginTop="27dp"
+		android:layout_marginLeft="40dp"
+		android:layout_marginRight="40dp"
 		/>
 
 </LinearLayout>

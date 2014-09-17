@@ -7,11 +7,13 @@
     
     <View
         android:id="@+id/guide_play_pro_list_item_line"
-        android:layout_width="326dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_centerHorizontal="true"
         android:background="@color/bg_gray2"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="17dp"
+        android:layout_marginRight="17dp"
         />
     
     <ImageView 
@@ -131,7 +133,7 @@
 	        android:layout_marginLeft="14dp"
 	        android:layout_centerVertical="true"
 	        android:thumb="@drawable/gray_progress"
-	        android:maxHeight="4dp"
+	        android:maxHeight="3dp"
 	        android:thumbOffset="7dp"
 	        />
 	    

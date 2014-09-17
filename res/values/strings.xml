@@ -22,5 +22,29 @@
 	<string name="choose_time_text2">我们特地采访了专家学者，将在重要器物的地方插播他们的观点。</string>
 	<string name="choose_time_text3">请根据您的兴趣选择专家讲解的时长。</string>
 	<string name="choose_time_text4">不用纠结，导游过程中还可以自由增减</string>
-    
+	<string name="add_question_text">添加问题</string>
+	<string name="add_question_text1">问题</string>
+    <string name="add_question_text2">请简洁清楚地提出您的问题</string>
+	<string name="add_question_text3">补充描述</string>
+	<string name="add_question_text4">说说您的想法或者问题缘起等</string>
+	<string name="add_question_text5">联系方式（非公开）</string>
+	<string name="add_question_text6">请填写E-mail，有新的回答将通知您。</string>
+	<string name="add_question_text7">发布</string>
+	<string name="answer_question_text1">写回答</string>
+	<string name="answer_question_text2">请写下您的见解</string>
+	<string name="answer_question_text3">个人资料</string>
+	<string name="answer_question_text4">昵称</string>
+	<string name="answer_question_text5">个人介绍，如职业，兴趣等</string>
+	<string name="answer_question_text6">如果想关注此问题，请留下E-mail</string>
+	<string name="answer_question_text7">发布</string>
+	<string name="look_question_text1">请填写E-mail，有新的回答将通知您</string>
+	<string name="look_question_text2">确定</string>
+	<string name="advise">推荐</string>
+	<string name="start_text1">请全程佩戴耳机，以免影响他人，谢谢支持</string>
+	<string name="start_text2">请在到达此处时点击按钮，开始导游</string>
+	<string name="start_text3">开始导游</string>
+	<string name="title1">开始</string>
+	<string name="title2">选择时长</string>
+	<string name="title3">选择导游</string>
+	
 </resources>

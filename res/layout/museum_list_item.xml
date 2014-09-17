@@ -6,7 +6,7 @@
     >
     
     <ImageView
-        android:id="@+id/meseum_list_item_cover"
+        android:id="@+id/meseum_list_item_cover_image"
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:contentDescription="@string/app_name"
