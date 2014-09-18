@@ -336,24 +336,27 @@ public class QuestionInfoActivity extends Activity
 	
 	private void stopPlay()
 	{
-		isPlaying = false;
-		playButton.setImageResource( R.drawable.pro_play );
-		seekBar.setProgress( 0 );
-		seekBar.setProgressDrawable( getResources().getDrawable( R.drawable.seekbar_gray_bg ) );
-		
-		Drawable drawable = getResources().getDrawable( R.drawable.gray_progress );
-		drawable.setBounds( 0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight() );
-		seekBar.setThumb( drawable );
-		try
+		if( entity.getVoiceCount() != 0 )
 		{
-			if( player != null )
+			isPlaying = false;
+			playButton.setImageResource( R.drawable.pro_play );
+			seekBar.setProgress( 0 );
+			seekBar.setProgressDrawable( getResources().getDrawable( R.drawable.seekbar_gray_bg ) );
+			
+			Drawable drawable = getResources().getDrawable( R.drawable.gray_progress );
+			drawable.setBounds( 0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight() );
+			seekBar.setThumb( drawable );
+			try
 			{
-				player.stop();
-				player.release();
-				player = null;
+				if( player != null )
+				{
+					player.stop();
+					player.release();
+					player = null;
+				}
 			}
+			catch( Exception ex ) {}
 		}
-		catch( Exception ex ){}
 	}
 	
 	protected void onActivityResult( int requestCode, int resultCode, Intent data ) 
@@ -387,16 +390,19 @@ public class QuestionInfoActivity extends Activity
 	{
 		if( keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0 )
 		{
-			try
+			if( entity.getVoiceCount() != 0 )
 			{
-				if( player != null )
+				try
 				{
-					player.stop();
-					player.release();
-					player = null;
+					if( player != null )
+					{
+						player.stop();
+						player.release();
+						player = null;
+					}
 				}
+				catch( Exception ex ){}
 			}
-			catch( Exception ex ){}
 			setResult( 100 );
 			finish();
 			return true;

@@ -245,7 +245,7 @@ public class AddQuestionActivity extends Activity
 	
 	protected void onActivityResult( int requestCode, int resultCode, Intent data ) 
 	{
-		if( resultCode == 0 )
+		if( resultCode == 100 )
 		{
 			finish();
 		}
