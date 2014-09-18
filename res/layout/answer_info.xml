@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray1"
+    >
+    
+    <LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" 
+	    >
+	    
+        <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="60dp"
+	        android:background="@color/bg_green"
+	        >
+	        
+            <TextView 
+                android:id="@+id/answer_info_title"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerInParent="true"
+		        android:textColor="#ffffff"
+		        android:textSize="@dimen/word_big"
+		        />
+            
+	    </RelativeLayout>
+	    
+        <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="35dp"
+	        android:layout_marginTop="35dp"
+	        >
+	        
+            <TextView 
+                android:id="@+id/answer_info_text1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:layout_marginLeft="20dp"
+		        android:textColor="@color/bg_gray8"
+		        android:textSize="@dimen/word_big"
+		        />
+            
+            <TextView 
+                android:id="@+id/answer_info_text2"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:layout_marginLeft="20dp"
+		        android:layout_toRightOf="@+id/answer_info_text1"
+		        android:textColor="@color/bg_gray6"
+		        android:textSize="@dimen/word_small"
+		        />
+            
+	    </RelativeLayout>
+	    
+        <TextView 
+            android:id="@+id/answer_info_content"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="30dp"
+	        android:layout_marginLeft="20dp"
+	        android:layout_marginRight="20dp"
+	        android:textColor="@color/bg_gray8"
+	        android:textSize="@dimen/word_big"
+	        />
+
+	</LinearLayout>
+    
+</ScrollView>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray1"
+    >
+    
+    <RelativeLayout 
+        android:id="@+id/question_list_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/bg_green"
+        >
+        
+        <EditText 
+            android:id="@+id/question_list_input"
+            android:layout_height="40dp"
+            android:layout_width="240dp"
+            android:layout_centerInParent="true"
+            android:paddingLeft="10dp"
+            android:textSize="@dimen/word_small"
+            android:inputType="text"
+            />
+        
+        <ImageButton
+            android:id="@+id/question_list_search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/question_list_input"
+            android:src="@drawable/search"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="@string/app_name"
+            android:background="@null"
+            />
+        
+    </RelativeLayout>
+    
+    <ListView
+        android:id="@+id/question_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:smoothScrollbar="true"
+        android:cacheColorHint="#00000000"
+        android:listSelector="#00000000"
+        android:background="@color/bg_gray1"
+        android:divider="@null"
+        android:layout_below="@+id/question_list_input_layout"
+        android:layout_above="@+id/question_list_add_button"
+        android:layout_marginBottom="5dp"
+        />
+    
+    <Button 
+		android:id="@+id/question_list_add_button"
+		android:layout_width="match_parent"
+		android:layout_height="40dp"
+		android:background="@drawable/round_button_orange"
+		android:textSize="@dimen/word_small"
+		android:textColor="#ffffff"
+		android:text="@string/add_question_text"
+		android:layout_alignParentBottom="true"
+		android:layout_marginBottom="5dp"
+		android:layout_marginLeft="25dp"
+		android:layout_marginRight="25dp"
+		android:gravity="center"
+		/>
+
+</RelativeLayout>
