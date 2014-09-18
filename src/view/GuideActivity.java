@@ -228,6 +228,8 @@ public class GuideActivity extends Activity
 			{
 				public void onClick( View view )
 				{
+					pauseAll();
+					
 					Intent intent = new Intent( GuideActivity.this, QuestionActivity.class );
 					startActivity( intent );
 				}
@@ -260,6 +262,10 @@ public class GuideActivity extends Activity
 		);
 		
 		buttonPre = ( Button ) findViewById( R.id.guide_play_button_pre );
+		if( placeIndex != 0 ) 
+		{
+			buttonPre.setText( "上一展厅" );
+		}
 		buttonPre.setOnClickListener
 		(
 			new OnClickListener()
@@ -269,6 +275,10 @@ public class GuideActivity extends Activity
 					if( partIndex != 0 )
 					{
 						showPrePart();
+					}
+					else if( placeIndex != 0 )
+					{
+						showPrePlace();
 					}
 				}
 			}
@@ -282,6 +292,10 @@ public class GuideActivity extends Activity
 		{
 			buttonNext.setText( placeEntity.getPartList().get( 1 ).getName() + "   " );
 		}
+		else if( placeIndex != MuseumEntity.placeList.size() - 1 )
+		{			
+			buttonNext.setText( "下一展厅" );
+		}
 		buttonNext.setOnClickListener
 		(
 			new OnClickListener()
@@ -291,6 +305,10 @@ public class GuideActivity extends Activity
 					if( partIndex != placeEntity.getPartList().size() - 1 )
 					{
 						showNextPart();
+					}
+					else if( placeIndex != MuseumEntity.placeList.size() - 1 )
+					{
+						showNextPlace();
 					}
 				}
 			}
@@ -633,10 +651,10 @@ public class GuideActivity extends Activity
 			imageView.setImageResource( R.drawable.point );
 			LayoutParams params = new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT );
 			params.addRule( RelativeLayout.CENTER_VERTICAL );
-			double value = ( partEntity.getStart() * 1.0 * 654 / placeEntity.getLength() + 26 ) * Information.ScreenWidth / 720;
+			double value = ( partEntity.getStart() * 1.0 * 654 / placeEntity.getLength() + 28 ) * Information.ScreenWidth / 720;
 			if( i == 0 )
 			{
-				value = partEntity.getStart() * 1.0 * 654 / placeEntity.getLength() * Information.ScreenWidth / 720 + 13 * Information.ScreenDensity;
+				value = partEntity.getStart() * 1.0 * 654 / placeEntity.getLength() * Information.ScreenWidth / 720 + 14 * Information.ScreenDensity;
 			}
 			params.leftMargin = ( new BigDecimal( value ).setScale( 0, BigDecimal.ROUND_HALF_UP ) ).intValue();
 			imageView.setLayoutParams( params );
@@ -712,9 +730,17 @@ public class GuideActivity extends Activity
 		{
 			buttonPre.setText( "   " + placeEntity.getPartList().get( partIndex - 1 ).getName() );
 		}
+		else if( placeIndex != 0 )
+		{
+			buttonPre.setText( "上一展厅" );
+		}
 		if( partIndex < placeEntity.getPartList().size() - 1 )
 		{
 			buttonNext.setText( placeEntity.getPartList().get( partIndex + 1 ).getName() + "   " );
+		}
+		else if( placeIndex != MuseumEntity.placeList.size() - 1 )
+		{
+			buttonNext.setText( "下一展厅" );
 		}
 	}
 	/**
@@ -1071,6 +1097,14 @@ public class GuideActivity extends Activity
 		init();
 	}
 	/**
+	 * 播放上一展厅
+	 */
+	private void showPrePlace()
+	{
+		placeIndex --;
+		updatePlace();
+	}
+	/**
 	 * 当前展厅播放完毕，继续播放下一展厅
 	 */
 	private void showNextPlace()
@@ -1110,6 +1144,20 @@ public class GuideActivity extends Activity
 			{
 				proPlayMap.put( i, false );
 			}
+		}
+	}
+	/**
+	 * 暂停所有播放
+	 */
+	private void pauseAll()
+	{
+		if( isGuidePlaying == true )
+		{
+			pauseGuide();
+		}
+		else if( isProPlaying == true )
+		{
+			handler.sendEmptyMessage( 6 );
 		}
 	}
 	/**

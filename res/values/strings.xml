@@ -46,5 +46,7 @@
 	<string name="title1">开始</string>
 	<string name="title2">选择时长</string>
 	<string name="title3">选择导游</string>
+	<string name="answer1">回答</string>
+	<string name="answer2">关注</string>
 	
 </resources>

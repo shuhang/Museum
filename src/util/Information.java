@@ -12,6 +12,9 @@ public class Information
 	public static int ScreenHeight;
 	public static float ScreenDensity;
 	
+	public static int AnswerCount;
+	public static int LookCount;
+	
 	public static String[] ProList1 = 
 	  { 
 		"穿的是特殊的法服",
