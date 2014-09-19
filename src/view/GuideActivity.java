@@ -264,7 +264,7 @@ public class GuideActivity extends Activity
 		buttonPre = ( Button ) findViewById( R.id.guide_play_button_pre );
 		if( placeIndex != 0 ) 
 		{
-			buttonPre.setText( "上一展厅" );
+			buttonPre.setText( "   上一展厅" );
 		}
 		buttonPre.setOnClickListener
 		(
@@ -294,7 +294,7 @@ public class GuideActivity extends Activity
 		}
 		else if( placeIndex != MuseumEntity.placeList.size() - 1 )
 		{			
-			buttonNext.setText( "下一展厅" );
+			buttonNext.setText( "下一展厅   " );
 		}
 		buttonNext.setOnClickListener
 		(
@@ -308,7 +308,7 @@ public class GuideActivity extends Activity
 					}
 					else if( placeIndex != MuseumEntity.placeList.size() - 1 )
 					{
-						showNextPlace();
+						showNextPlace();						
 					}
 				}
 			}
@@ -732,7 +732,7 @@ public class GuideActivity extends Activity
 		}
 		else if( placeIndex != 0 )
 		{
-			buttonPre.setText( "上一展厅" );
+			buttonPre.setText( "   上一展厅" );
 		}
 		if( partIndex < placeEntity.getPartList().size() - 1 )
 		{
@@ -740,7 +740,7 @@ public class GuideActivity extends Activity
 		}
 		else if( placeIndex != MuseumEntity.placeList.size() - 1 )
 		{
-			buttonNext.setText( "下一展厅" );
+			buttonNext.setText( "下一展厅   " );
 		}
 	}
 	/**
@@ -765,7 +765,7 @@ public class GuideActivity extends Activity
 		
 		int width = ( int ) ( Information.ScreenWidth * 0.375 );
 		int height = width * 2 / 3;
-		smallBitmap = Tool.resizeBitmap( Information.RootPath + partEntity.getImageUrl(), width, height );
+		smallBitmap = Tool.cutImage( Tool.resizeBitmap( Information.RootPath + partEntity.getImageUrl(), width, height ), width, height );
 		headerImage.setImageBitmap( smallBitmap );
 	}
 	/**
@@ -1070,12 +1070,12 @@ public class GuideActivity extends Activity
 		init();
 	}
 	/**
-	 * 选择不同的展厅后，开始更新
 	 */
 	private void updatePlace()
 	{
 		buttonChoosePlace.setText( MuseumEntity.placeList.get( placeIndex ) );
 
+		guideProgress = 0;
 		partIndex = 0;
 		proPlayIndex = -1;
 		MySeekBar.getInstance().stopPlay();

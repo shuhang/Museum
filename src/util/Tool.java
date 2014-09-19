@@ -101,8 +101,13 @@ public class Tool
 		Bitmap oldBitmap = BitmapFactory.decodeFile( path );
 		int oldWidth = oldBitmap.getWidth();
     	int oldHeight = oldBitmap.getHeight();
+    	float scale = ( float ) ( width * 1.0 / oldWidth );
+        if( oldWidth * 1.0 / width * height > oldHeight )
+        {
+        	scale = ( float ) ( height * 1.0 / oldHeight );
+        }
         Matrix matrix = new Matrix();
-        matrix.postScale( ( float ) width / oldWidth, ( float ) height / oldHeight );
+        matrix.postScale( scale, scale );
         return Bitmap.createBitmap( oldBitmap, 0, 0, oldWidth, oldHeight, matrix, false );
 	}
 	/**
@@ -135,6 +140,19 @@ public class Tool
 		final int oldWidth = resizeBitmap.getWidth();
 		final int oldHeight = resizeBitmap.getHeight();
 		return Bitmap.createBitmap( resizeBitmap, Math.abs( ( oldWidth - width ) / 2 ), Math.abs( ( oldHeight - height ) / 2 ), width, height );
+	}
+	/**
+	 * 截取指定大小图片
+	 * @param path
+	 * @param width
+	 * @param height
+	 * @return
+	 */
+	public static Bitmap cutImage( Bitmap bitmap, int width, int height )
+	{
+		final int oldWidth = bitmap.getWidth();
+		final int oldHeight = bitmap.getHeight();
+		return Bitmap.createBitmap( bitmap, Math.abs( ( oldWidth - width ) / 2 ), Math.abs( ( oldHeight - height ) / 2 ), width, height );
 	}
 	/**
 	 * 

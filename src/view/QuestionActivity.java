@@ -71,8 +71,15 @@ public class QuestionActivity extends Activity
 				switch( message.what )
 				{
 				case 0 : //搜索成功
-					adapter = new QuestionListAdapter( QuestionActivity.this, questionList );
-					questionListView.setAdapter( adapter );
+					if( questionList.size() > 0 )
+					{
+						adapter = new QuestionListAdapter( QuestionActivity.this, questionList );
+						questionListView.setAdapter( adapter );
+					}
+					else
+					{
+						showMessage( "还没有相关问题，去添加一个问题吧。" );
+					}
 					break;
 				case 1 : //搜索失败
 					showMessage( "搜索失败" );
