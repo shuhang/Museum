@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.os.Bundle;
 import android.os.Handler;
@@ -529,6 +530,18 @@ public class GuideActivity extends Activity
 				}
 			);
 			
+			guidePlayer.setOnCompletionListener
+			(
+				new OnCompletionListener()
+				{
+					public void onCompletion( MediaPlayer mp ) 
+					{
+						handler.sendEmptyMessage( 5 );
+						stopTimer();
+					}
+				}
+			);
+			
 			guideProgress = 0;
 			isGuidePlaying = true;
 			buttonGuidePlay.setImageResource( R.drawable.guide_stop );
@@ -536,36 +549,54 @@ public class GuideActivity extends Activity
 			textTimeNow.setText( "00:00" );
 			textTimeAll.setText( Tool.getStringBySecond( placeEntity.getLength() ) );
 			
-			if( timer != null )
-			{
-				timer.cancel();
-			}
-			timer = new Timer();
-			timer.schedule
-			( 
-				new TimerTask()
-				{
-					public void run()
-					{
-						if( isGuide && isGuidePlaying )
-						{
-							if( guideProgress < placeEntity.getLength() )
-							{
-								guideProgress += 0.1;
-								handler.sendEmptyMessage( 7 );
-								judgeAtPoint();
-							}
-							else
-							{
-								handler.sendEmptyMessage( 5 );
-								timer.cancel();
-							}
-						}
-					}
-				}, 100, 100 
-			);
+			stopTimer();
+			startTimer();
 		}
 		catch( Exception ex ) {}
+	}
+	/**
+	 * 
+	 */
+	private void stopTimer()
+	{
+		if( timer != null )
+		{
+			timer.cancel();
+			timer = null;
+		}
+	}
+	/**
+	 * 
+	 */
+	private void startTimer()
+	{
+		if( timer == null )
+		{
+			timer = new Timer();
+		}
+		timer.schedule
+		( 
+			new TimerTask()
+			{
+				public void run()
+				{
+					seekbarAction();
+				}
+			}
+			, 100, 100 
+		);
+	}
+	/**
+	 * 
+	 */
+	private void seekbarAction()
+	{
+		if( isGuide && isGuidePlaying )
+		{
+			guideProgress += guidePlayer.getCurrentPosition() * 1.0 / 1000;
+			handler.sendEmptyMessage( 7 );
+			judgeAtPoint();
+		}
 	}
 	/**
 	 *  检查是否到达特殊时间点并响应
@@ -1186,5 +1217,28 @@ public class GuideActivity extends Activity
 			return true;
 		}
 		return false;
+	}
+	/**
+	 * 
+	 */
+	protected void onPause()
+	{
+		super.onPause();
+		if( isGuidePlaying )
+		{
+			stopTimer();
+		}
+		else if( isProPlaying )
+		{
+			MySeekBar.getInstance().stopTimer();
+		}
+	}
+	/**
+	 * 
+	 */
+	protected void onResume()
+	{
+		super.onResume();
+		
 	}
 }

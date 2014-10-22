@@ -7,6 +7,7 @@ import java.util.TimerTask;
 import view.GuideActivity;
 import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.widget.SeekBar;
 
@@ -59,38 +60,61 @@ public class MySeekBar
 				}
 			);
 			
-			if( timer != null )
-			{
-				timer.cancel();
-			}
-			timer = new Timer();
-			timer.schedule
-			( 
-				new TimerTask()
+			proPlayer.setOnCompletionListener
+			(
+				new OnCompletionListener()
 				{
-					public void run()
+					public void onCompletion( MediaPlayer mp ) 
 					{
-						if( GuideActivity.isProPlaying )
-						{
-							if( progress < GuideActivity.proPlayLength )
-							{
-								progress += 0.1;
-								GuideActivity.handler.sendEmptyMessage( 8 );
-							}
-							else
-							{
-								GuideActivity.handler.sendEmptyMessage( 4 );
-								timer.cancel();
-							}
-						}
+						GuideActivity.handler.sendEmptyMessage( 4 );
+						stopTimer();
 					}
 				}
-				, 100, 100 
 			);
+			
+			stopTimer();
+			startTimer();
 		}
 		catch( Exception ex ) 
 		{
 			ex.printStackTrace();
+		}
+	}
+	
+	public void stopTimer()
+	{
+		if( timer != null )
+		{
+			timer.cancel();
+			timer = null;
+		}
+	}
+	
+	public void startTimer()
+	{
+		if( timer == null )
+		{
+			timer = new Timer();
+		}
+		timer.schedule
+		( 
+			new TimerTask()
+			{
+				public void run()
+				{
+					seekbarAction();
+				}
+			}
+			, 100, 100 
+		);
+	}
+	
+	private void seekbarAction()
+	{
+		if( GuideActivity.isProPlaying )
+		{
+			progress = proPlayer.getCurrentPosition() * 1.0 / 1000;
+			GuideActivity.handler.sendEmptyMessage( 8 );
 		}
 	}
 	
