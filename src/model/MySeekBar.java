@@ -7,8 +7,6 @@ import java.util.TimerTask;
 import view.GuideActivity;
 import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
-import android.media.MediaPlayer.OnErrorListener;
 import android.widget.SeekBar;
 
 public class MySeekBar 
@@ -29,11 +27,6 @@ public class MySeekBar
 			instance = new MySeekBar();
 		}
 		return instance;
-	}
-	
-	public void init()
-	{
-		startTimer();
 	}
 	
 	public void stopTimer()
@@ -57,9 +50,9 @@ public class MySeekBar
 			{
 				public void run()
 				{
-					if( GuideActivity.isProPlaying && seekBarMap.get( GuideActivity.proPlayIndex ) != null )
+					if( GuideActivity.isProPlaying )
 					{
-						progress = GuideActivity.myService.getProgress();
+						progress = GuideActivity.myService.getProProgress();
 						if( GuideActivity.isShowing )
 						{
 							GuideActivity.handler.sendEmptyMessage( 8 );
@@ -73,40 +66,9 @@ public class MySeekBar
 	
 	public void updateSeekBar()
 	{
-		seekBarMap.get( GuideActivity.proPlayIndex ).setProgress( ( int ) progress );
-	}
-	
-	public void startPlay()
-	{
-		try
+		if( GuideActivity.proPlayIndex != -1 && seekBarMap.get( GuideActivity.proPlayIndex ) != null )
 		{
-			proPlayer.start();
-		}
-		catch( Exception ex ) {}
-	}
-	
-	public void pausePlay()
-	{
-		try
-		{
-			proPlayer.pause();
-		}
-		catch( Exception ex ) {}
-	}
-	
-	public void stopPlay()
-	{
-		try
-		{
-			if( proPlayer != null )
-			{
-				proPlayer.stop();
-				proPlayer.release();
-			}
-		}
-		catch( Exception ex )
-		{
-			ex.printStackTrace();
+			seekBarMap.get( GuideActivity.proPlayIndex ).setProgress( ( int ) progress );
 		}
 	}
 	
@@ -115,6 +77,7 @@ public class MySeekBar
 		if( timer != null )
 		{
 			timer.cancel();
+			timer = null;
 		}
 	}
 }

@@ -123,11 +123,8 @@ public class GuidePlayListAdapter extends BaseAdapter
 						else
 						{
 							GuideActivity.isProPlaying = true;
-							
-							Message message = GuideActivity.handler.obtainMessage();
-							message.what = 1;
-							message.arg1 = index;
-							GuideActivity.handler.sendMessage( message );
+							GuideActivity.myService.startProPlay();
+							GuideActivity.handler.sendEmptyMessage( 1 );
 						}
 					}
 					else
@@ -135,7 +132,7 @@ public class GuidePlayListAdapter extends BaseAdapter
 						GuideActivity.isProPlaying = true;
 						
 						Message message = GuideActivity.handler.obtainMessage();
-						message.what = 1;
+						message.what = 10;
 						message.arg1 = index;
 						GuideActivity.handler.sendMessage( message );
 					}
@@ -153,20 +150,16 @@ public class GuidePlayListAdapter extends BaseAdapter
 				public void onStartTrackingTouch( SeekBar seekBar ) {}
 				public void onStopTrackingTouch( SeekBar seekBar ) 
 				{
-					if( index == GuideActivity.proPlayIndex && GuideActivity.isProPlaying )
+					if( index == GuideActivity.proPlayIndex )
 					{
+						MySeekBar.getInstance().seekBarMap.get( GuideActivity.proPlayIndex ).setMax( GuideActivity.proPlayLength );
+//						/System.out.println( seekBar.getMax() + "ss" );
+						
 						MySeekBar.progress = seekBar.getProgress();
-						if( MySeekBar.proPlayer != null )
+						GuideActivity.myService.seekProPlay( ( int ) MySeekBar.progress );
+						if( GuideActivity.isProPlaying == false )
 						{
-							try
-							{
-								MySeekBar.proPlayer.seekTo( ( int ) MySeekBar.progress * 1000 );
-							}
-							catch( Exception ex ) {}
-							if( GuideActivity.isProPlaying == false )
-							{
-								MySeekBar.getInstance().pausePlay();
-							}
+							GuideActivity.myService.pauseProPlay();
 						}
 					}
 				}
