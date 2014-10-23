@@ -33,52 +33,7 @@ public class MySeekBar
 	
 	public void init()
 	{
-		try
-		{
-			progress = 0;
-			
-			proPlayer = new MediaPlayer();
-			proPlayer.setDataSource( GuideActivity.audioUrl );
-			proPlayer.prepare();
-			
-			proPlayer.setOnErrorListener
-			(
-				new OnErrorListener()
-				{
-					public boolean onError( MediaPlayer arg0, int arg1, int arg2 ) 
-					{
-						try
-						{
-							arg0.reset();
-							arg0.setDataSource( GuideActivity.audioUrl );
-							arg0.prepare();
-							arg0.start();
-						}
-						catch( Exception ex ) {}
-						return true;
-					}
-				}
-			);
-			
-			proPlayer.setOnCompletionListener
-			(
-				new OnCompletionListener()
-				{
-					public void onCompletion( MediaPlayer mp ) 
-					{
-						GuideActivity.handler.sendEmptyMessage( 4 );
-						stopTimer();
-					}
-				}
-			);
-			
-			stopTimer();
-			startTimer();
-		}
-		catch( Exception ex ) 
-		{
-			ex.printStackTrace();
-		}
+		startTimer();
 	}
 	
 	public void stopTimer()
@@ -102,28 +57,23 @@ public class MySeekBar
 			{
 				public void run()
 				{
-					seekbarAction();
+					if( GuideActivity.isProPlaying && seekBarMap.get( GuideActivity.proPlayIndex ) != null )
+					{
+						progress = GuideActivity.myService.getProgress();
+						if( GuideActivity.isShowing )
+						{
+							GuideActivity.handler.sendEmptyMessage( 8 );
+						}
+					}
 				}
 			}
 			, 100, 100 
 		);
 	}
 	
-	private void seekbarAction()
-	{
-		if( GuideActivity.isProPlaying )
-		{
-			progress = proPlayer.getCurrentPosition() * 1.0 / 1000;
-			GuideActivity.handler.sendEmptyMessage( 8 );
-		}
-	}
-	
 	public void updateSeekBar()
 	{
-		if( GuideActivity.isProPlaying && seekBarMap.get( GuideActivity.proPlayIndex ) != null )
-		{
-			seekBarMap.get( GuideActivity.proPlayIndex ).setProgress( ( int ) progress );
-		}
+		seekBarMap.get( GuideActivity.proPlayIndex ).setProgress( ( int ) progress );
 	}
 	
 	public void startPlay()

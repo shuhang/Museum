@@ -4,6 +4,7 @@ import android.os.Environment;
 
 public class Information 
 {
+	public static String Sdcard = Environment.getExternalStorageDirectory().toString();
 	public static String RootPath = Environment.getExternalStorageDirectory().toString() + "/Museum";
 	
 	public static String Server_Url = "http://112.124.15.159:3000/places/2";

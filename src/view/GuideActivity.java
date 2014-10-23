@@ -10,21 +10,23 @@ import java.util.TimerTask;
 import model.GuidePlayListAdapter;
 import model.MySeekBar;
 import model.PopMenu;
+import service.MyService;
 import util.Information;
 import util.Tool;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
-import android.media.MediaPlayer.OnErrorListener;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
@@ -58,13 +60,18 @@ import entity.ProEntity;
 
 public class GuideActivity extends Activity
 {
+	public static boolean isShowing = true;
+	
 	public static Handler handler;
 	public static int placeIndex = 0;
 	public static int guideIndex = 0;
 	
 	private boolean isGuide = true;
 	
-	private int guideMode;
+	/**
+	 *  导游模式，3种
+	 */
+	public static int guideMode;
 	
 	private PopMenu placePopMenu;
 	private PopMenu guidePopMenu;
@@ -84,19 +91,22 @@ public class GuideActivity extends Activity
 	private Button buttonPre;
 	private Button buttonNext;
 	private ImageButton buttonGuidePlay;
-	
-	private int partIndex;
-	private GuideEntity guideEntity;
-	private PlaceEntity placeEntity;
-	private PartEntity partEntity;
+	/**
+	 *  Information
+	 */
+	public static int partIndex;
+	public static GuideEntity guideEntity;
+	public static PlaceEntity placeEntity;
+	public static PartEntity partEntity;
+	public static double guideProgress;
+	public static double proProgress;
+	public static boolean lock = false;
 	
 	private TextView textTimeNow;
 	private TextView textTimeAll;
 	
 	//Guide Play
-	private MediaPlayer guidePlayer = null;
-	private double guideProgress = 0;
-	private boolean isGuidePlaying = false;
+	public static boolean isGuidePlaying = false;
 	private Timer timer = null;
 	//ProPlay
 	public static SparseBooleanArray proPlayMap = new SparseBooleanArray();
@@ -111,6 +121,26 @@ public class GuideActivity extends Activity
 	private Bitmap smallBitmap = null;
 	private Bitmap bigBitmap = null;
 	private Dialog dialog;
+	//Service
+	public static MyService myService = null;
+	private ServiceConnection connection = new ServiceConnection()
+	{
+		public void onServiceConnected( ComponentName name, IBinder service )
+		{
+			MyService.MyBinder myBinder = ( MyService.MyBinder ) service;
+			myService = myBinder.getService();
+			myService.updateAudioUrl();
+			myService.preparePlay();
+			myService.startPlay();
+			startTimer();
+			startGuidePlay();
+		}
+		public void onServiceDisconnected( ComponentName name )
+		{
+			
+		}
+	};
+	
 	@SuppressLint({ "HandlerLeak" })
 	protected void onCreate( Bundle savedInstanceState ) 
 	{
@@ -143,6 +173,7 @@ public class GuideActivity extends Activity
 					if( isGuide )
 					{
 						textTimeNow.setText( Tool.getStringBySecond( guideProgress ) );
+						
 						updateHeaderView();
 						updatePreNextButton();
 						updatePartListView();
@@ -182,11 +213,8 @@ public class GuideActivity extends Activity
 					isProPlaying = false;
 					playNextPro();
 					break;
-				case 5 : //导游播放完毕
-					if( isGuide )
-					{
-						showNextPlace();
-					}
+				case 5 : //更新整个界面
+					updatePlace();
 					break;
 				case 6 : //导游播放按钮响应，停止专家播放
 					proPlayIndex = -1;
@@ -201,9 +229,18 @@ public class GuideActivity extends Activity
 				case 8 : //更新专家播放进度条
 					MySeekBar.getInstance().updateSeekBar();
 					break;
+				case 9 : //开始播放
+					startGuidePlay();
+					break;
 				}
 			}
 		};
+		
+		if( isGuide )
+		{
+			Intent intent = new Intent( this, MyService.class );
+			bindService( intent, connection, Context.BIND_AUTO_CREATE );		
+		}
 
 		init();
 	}
@@ -309,7 +346,7 @@ public class GuideActivity extends Activity
 					}
 					else if( placeIndex != MuseumEntity.placeList.size() - 1 )
 					{
-						showNextPlace();						
+						myService.playNext();						
 					}
 				}
 			}
@@ -350,13 +387,14 @@ public class GuideActivity extends Activity
 				public void onStopTrackingTouch( SeekBar seekBar ) 
 				{
 					guideProgress = seekBar.getProgress();
+					myService.seekPlay( seekBar.getProgress() );
+					handler.sendEmptyMessage( 7 );
 					judgeBetweenPoint();
 					try
-					{						
-						guidePlayer.seekTo( ( int ) guideProgress * 1000 );
+					{
 						if( isGuidePlaying == false )
 						{
-							guidePlayer.pause();
+							myService.pausePlay();
 						}
 					}
 					catch( Exception ex ) {}
@@ -425,10 +463,8 @@ public class GuideActivity extends Activity
 		updatePartListView();
 		
 		if( isGuide )
-		{
+		{	
 			addPoint();
-			
-			startGuidePlay();
 		}
 	}
 	/**
@@ -468,7 +504,7 @@ public class GuideActivity extends Activity
 		{
 			isGuidePlaying = true;
 			buttonGuidePlay.setImageResource( R.drawable.guide_stop );
-			guidePlayer.start();
+			myService.startPlay();
 		}
 		catch( Exception ex ) {}
 	}
@@ -481,7 +517,7 @@ public class GuideActivity extends Activity
 		{
 			isGuidePlaying = false;
 			buttonGuidePlay.setImageResource( R.drawable.guide_play );
-			guidePlayer.pause();
+			myService.pausePlay();
 		}
 		catch( Exception ex ) {}
 	}
@@ -504,55 +540,11 @@ public class GuideActivity extends Activity
 	 */
 	private void startGuidePlay()
 	{
-		try
-		{
-			guidePlayer = new MediaPlayer();
-			guidePlayer.setDataSource( Information.RootPath + placeEntity.getAudioUrl() );
-			guidePlayer.prepare();
-			guidePlayer.start();
+		isGuidePlaying = true;
+		buttonGuidePlay.setImageResource( R.drawable.guide_stop );
 			
-			guidePlayer.setOnErrorListener
-			(
-				new OnErrorListener()
-				{
-					public boolean onError( MediaPlayer arg0, int arg1, int arg2 ) 
-					{
-						try
-						{
-							arg0.reset();
-							arg0.setDataSource( Information.RootPath + placeEntity.getAudioUrl() );
-							arg0.prepare();
-							arg0.start();
-						}
-						catch( Exception ex ) {}
-						return true;
-					}
-				}
-			);
-			
-			guidePlayer.setOnCompletionListener
-			(
-				new OnCompletionListener()
-				{
-					public void onCompletion( MediaPlayer mp ) 
-					{
-						handler.sendEmptyMessage( 5 );
-						stopTimer();
-					}
-				}
-			);
-			
-			guideProgress = 0;
-			isGuidePlaying = true;
-			buttonGuidePlay.setImageResource( R.drawable.guide_stop );
-			
-			textTimeNow.setText( "00:00" );
-			textTimeAll.setText( Tool.getStringBySecond( placeEntity.getLength() ) );
-			
-			stopTimer();
-			startTimer();
-		}
-		catch( Exception ex ) {}
+		textTimeNow.setText( "00:00" );
+		textTimeAll.setText( Tool.getStringBySecond( placeEntity.getLength() ) );
 	}
 	/**
 	 * 
@@ -591,11 +583,14 @@ public class GuideActivity extends Activity
 	 */
 	private void seekbarAction()
 	{
-		if( isGuide && isGuidePlaying )
+		if( !lock && isGuide && isGuidePlaying )
 		{
-			guideProgress += guidePlayer.getCurrentPosition() * 1.0 / 1000;
-			handler.sendEmptyMessage( 7 );
+			guideProgress = myService.getProgress();
 			judgeAtPoint();
+			if( isShowing )
+			{
+				handler.sendEmptyMessage( 7 );
+			}
 		}
 	}
 	/**
@@ -613,9 +608,13 @@ public class GuideActivity extends Activity
 			}
 			else if( placeEntity.getPartList().get( i ).getStart() - guideProgress <= 0 )
 			{
-				partIndex = i;
+				System.out.println( "aaa" );
+				partIndex = i; 
 				partEntity = placeEntity.getPartList().get( partIndex );
-				handler.sendEmptyMessage( 0 );
+				if( GuideActivity.isShowing )
+				{
+					handler.sendEmptyMessage( 0 );
+				}
 				break;
 			}
 		}
@@ -708,7 +707,7 @@ public class GuideActivity extends Activity
 		}
 	}
 	/**
-	 * 显示上一个展厅
+	 * 显示上一个区域
 	 */
 	private void showPrePart()
 	{
@@ -718,7 +717,7 @@ public class GuideActivity extends Activity
 		updatePartView();
 	}
 	/**
-	 * 显示下一个展厅
+	 * 显示下一个区域
 	 */
 	private void showNextPart()
 	{
@@ -732,19 +731,20 @@ public class GuideActivity extends Activity
 	 */
 	private void updatePartView()
 	{
-		seekBar.setProgress( partEntity.getStart() );
-		guideProgress = partEntity.getStart();
-		textTimeNow.setText( Tool.getStringBySecond( guideProgress ) );
-		
-		try
+		if( isProPlaying )
 		{
-			guidePlayer.seekTo( ( int ) guideProgress * 1000 );
-			if( isGuidePlaying == false )
-			{
-				guidePlayer.pause();
-			}
+			myService.stopPlay();
+			myService.updateAudioUrl();
 		}
-		catch( Exception ex ) {}
+		
+		seekBar.setProgress( partEntity.getStart() );
+		myService.seekPlay( partEntity.getStart() );
+		textTimeNow.setText( Tool.getStringBySecond( partEntity.getStart() ) );
+		
+		if( isGuidePlaying == false )
+		{
+			myService.pausePlay();
+		}
 		
 		updateHeaderView();
 		updatePreNextButton();
@@ -794,10 +794,10 @@ public class GuideActivity extends Activity
 		
 		headerText3.setText( "0 段等待播放" );
 		
-		int width = ( int ) ( Information.ScreenWidth * 0.375 );
-		int height = width * 2 / 3;
-		smallBitmap = Tool.cutImage( Tool.resizeBitmap( Information.RootPath + partEntity.getImageUrl(), width, height ), width, height );
-		headerImage.setImageBitmap( smallBitmap );
+//		int width = ( int ) ( Information.ScreenWidth * 0.375 );
+//		int height = width * 2 / 3;
+//		smallBitmap = Tool.cutImage( Tool.resizeBitmap( Information.RootPath + partEntity.getImageUrl(), width, height ), width, height );
+//		headerImage.setImageBitmap( smallBitmap );
 	}
 	/**
 	 * 更新界面的专家列表
@@ -805,10 +805,10 @@ public class GuideActivity extends Activity
 	private void updatePartListView()
 	{
 		isProPlaying = false;
-		MySeekBar.getInstance().cancelTimer();
 		proPlayIndex = -1;
+		MySeekBar.getInstance().cancelTimer();
 		MySeekBar.getInstance().seekBarMap.clear();
-		MySeekBar.getInstance().stopPlay();
+		
 		if( partEntity.getTags().length > 0 && MuseumEntity.ProMap.get( partEntity.getTags()[ 0 ] ) != null )
 		{
 			adapter = new GuidePlayListAdapter( this, MuseumEntity.ProMap.get( partEntity.getTags()[ 0 ] ) );
@@ -854,11 +854,7 @@ public class GuideActivity extends Activity
 		try
 		{
 			MySeekBar.getInstance().stopPlay();
-			if( guidePlayer != null )
-			{
-				guidePlayer.stop();
-				guidePlayer.release();
-			}
+			myService.killPlay();
 		}
 		catch( Exception ex ) {}
 		
@@ -1082,16 +1078,9 @@ public class GuideActivity extends Activity
 		proPlayIndex = -1;
 		MySeekBar.getInstance().stopPlay();
 		partIndex = 0;
-		guideProgress = 0;
 		guideEntity = MuseumEntity.GuideList.get( guideIndex );
 		placeEntity = guideEntity.getPlaceList().get( placeIndex );
 		partEntity = placeEntity.getPartList().get( partIndex );
-		try
-		{
-			guidePlayer.stop();
-			guidePlayer.release();
-		}
-		catch( Exception ex ) {}
 		
 		if( partEntity.getTags().length > 0 && MuseumEntity.ProMap.get( partEntity.getTags()[ 0 ] ) != null )
 		{
@@ -1101,56 +1090,29 @@ public class GuideActivity extends Activity
 		init();
 	}
 	/**
+	 *  更新当前展厅界面
 	 */
 	private void updatePlace()
 	{
-		buttonChoosePlace.setText( MuseumEntity.placeList.get( placeIndex ) );
-
-		guideProgress = 0;
-		partIndex = 0;
-		proPlayIndex = -1;
-		MySeekBar.getInstance().stopPlay();
-		placeEntity = guideEntity.getPlaceList().get( placeIndex );
-		partEntity = placeEntity.getPartList().get( partIndex );
-		
-		try
+		if( isGuidePlaying )
 		{
-			guidePlayer.stop();
-			guidePlayer.release();
+			init();
 		}
-		catch( Exception ex ) {}
-		
-		if( partEntity.getTags().length > 0 && MuseumEntity.ProMap.get( partEntity.getTags()[ 0 ] ) != null )
+		else
 		{
-			updateProPlayMap( MuseumEntity.ProMap.get( partEntity.getTags()[ 0 ] ).size() );
+			seekBar.setProgress( 0 );
+			myService.seekPlay( 0 );
+			myService.stopPlay();
+			buttonGuidePlay.setImageResource( R.drawable.pro_play );
 		}
-		
-		init();
 	}
 	/**
 	 * 播放上一展厅
 	 */
 	private void showPrePlace()
 	{
-		placeIndex --;
+		myService.playPre();
 		updatePlace();
-	}
-	/**
-	 * 当前展厅播放完毕，继续播放下一展厅
-	 */
-	private void showNextPlace()
-	{
-		if( placeIndex < MuseumEntity.placeList.size() - 1 )
-		{
-			placeIndex ++;
-			updatePlace();
-		}
-		else
-		{
-			seekBar.setProgress( 0 );
-			isGuidePlaying = false;
-			buttonGuidePlay.setImageResource( R.drawable.pro_play );
-		}
 	}
 	/**
 	 * 更新数据
@@ -1200,16 +1162,10 @@ public class GuideActivity extends Activity
 		{
 			try
 			{
-				if( timer != null )
-				{
-					timer.cancel();
-				}
-				MySeekBar.getInstance().cancelTimer();
-				if( guidePlayer != null )
-				{
-					guidePlayer.stop();
-					guidePlayer.release();
-				}
+				stopTimer();
+				MySeekBar.getInstance().stopTimer();
+				myService.killPlay();
+				unbindService( connection );
 			}
 			catch( Exception ex ) {}
 			MySeekBar.getInstance().stopPlay();
