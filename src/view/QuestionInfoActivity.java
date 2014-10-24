@@ -11,8 +11,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnErrorListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -48,16 +46,17 @@ public class QuestionInfoActivity extends Activity
 	private TextView textAnswer;
 	private TextView textLook;
 	
-	private Handler handler;
+	public static Handler handler;
+	public static boolean isPlaying = false;
 	
-	private boolean isPlaying = false;
-	private double progress = 0;
 	private int length;
-	private MediaPlayer player = null;
 	private Timer timer = null;
 	private ImageButton playButton;
 	private String url;
 	private SeekBar seekBar;
+	
+	private boolean isFirst = true;
+	private boolean isShowing = true;
 	
 	@SuppressLint("HandlerLeak")
 	protected void onCreate( Bundle savedInstanceState ) 
@@ -78,10 +77,13 @@ public class QuestionInfoActivity extends Activity
 					adapter.notifyDataSetChanged();
 					break;
 				case 1 :
-					seekBar.setProgress( ( int ) progress );
+					seekBar.setProgress( ( int ) GuideActivity.myService.getProProgress() );
 					break;
 				case 2 :
-					stopPlay();
+					if( isShowing )
+					{
+						stopPlay();
+					}
 					break;
 				}
 			}
@@ -116,7 +118,7 @@ public class QuestionInfoActivity extends Activity
 			{
 				public void onClick( View view )
 				{
-					stopPlay();
+					pausePlay();
 					
 					Intent intent = new Intent( QuestionInfoActivity.this, AnswerQuestionActivity.class );
 					intent.putExtra( "type", 0 );
@@ -133,7 +135,7 @@ public class QuestionInfoActivity extends Activity
 			{
 				public void onClick( View view )
 				{
-					stopPlay();
+					pausePlay();
 					
 					Intent intent = new Intent( QuestionInfoActivity.this, AnswerQuestionActivity.class );
 					intent.putExtra( "type", 1 );
@@ -196,17 +198,10 @@ public class QuestionInfoActivity extends Activity
 					public void onStartTrackingTouch( SeekBar seekBar ) {}
 					public void onStopTrackingTouch( SeekBar seekBar ) 
 					{
-						if( isPlaying )
+						GuideActivity.myService.seekProPlay( seekBar.getProgress() );
+						if( isPlaying == false )
 						{
-							progress = seekBar.getProgress();
-							if( player != null )
-							{
-								try
-								{
-									player.seekTo( ( int ) progress * 1000 );
-								}
-								catch( Exception ex ) {}
-							}
+							GuideActivity.myService.pauseProPlay();
 						}
 					}
 				}
@@ -230,7 +225,7 @@ public class QuestionInfoActivity extends Activity
 			{
 				public void onItemClick( AdapterView<?> parent, View view, int position, long id ) 
 				{
-					stopPlay();
+					pausePlay();
 					
 					AnswerEntity answer = list.get( position - 1 );
 					Bundle bundle = new Bundle();
@@ -245,6 +240,22 @@ public class QuestionInfoActivity extends Activity
 				}
 			}
 		);
+		
+		timer = new Timer();
+		timer.schedule
+		(
+			new TimerTask()
+			{
+				public void run()
+				{
+					if( isPlaying && isShowing )
+					{
+						handler.sendEmptyMessage( 1 );
+					}
+				}
+			}
+			, 100, 100 
+		);
 	}
 	
 	private void startPlay()
@@ -258,87 +269,28 @@ public class QuestionInfoActivity extends Activity
 		drawable.setBounds( 0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight() );
 		seekBar.setThumb( drawable );
 		
-		if( player == null )
+		if( isFirst )
 		{
-			try
-			{
-				progress = 0;
-				
-				player = new MediaPlayer();
-				player.setDataSource( url );
-				player.prepare();
-				
-				player.setOnErrorListener
-				(
-					new OnErrorListener()
-					{
-						public boolean onError( MediaPlayer arg0, int arg1, int arg2 ) 
-						{
-							try
-							{
-								arg0.reset();
-								arg0.setDataSource( url );
-								arg0.prepare();
-								arg0.start();
-							}
-							catch( Exception ex ) {}
-							return true;
-						}
-					}
-				);
-	
-				timer = new Timer();
-				timer.schedule
-				(
-					new TimerTask()
-					{
-						public void run()
-						{
-							if( isPlaying )
-							{
-								if( progress < length )
-								{
-									progress += 0.1;
-									handler.sendEmptyMessage( 1 );
-								}
-								else
-								{
-									handler.sendEmptyMessage( 2 );
-									timer.cancel();
-								}
-							}
-						}
-					}
-					, 100, 100 
-				);
-			}
-			catch( Exception ex ) 
-			{
-				ex.printStackTrace();
-			}
+			GuideActivity.myService.playNewPro( url, 0 );
+			isFirst = false;
 		}
-		player.start();
+		else
+		{
+			GuideActivity.myService.startProPlay();
+		}
 	}
 	
 	private void pausePlay()
 	{
 		isPlaying = false;
 		playButton.setImageResource( R.drawable.pro_play );
-		try
-		{
-			if( player != null )
-			{
-				player.pause();
-			}
-		}
-		catch( Exception ex ){}
+		GuideActivity.myService.pauseProPlay();
 	}
 	
 	private void stopPlay()
 	{
 		if( entity.getVoiceCount() != 0 )
 		{
-			isPlaying = false;
 			playButton.setImageResource( R.drawable.pro_play );
 			seekBar.setProgress( 0 );
 			seekBar.setProgressDrawable( getResources().getDrawable( R.drawable.seekbar_gray_bg ) );
@@ -346,16 +298,6 @@ public class QuestionInfoActivity extends Activity
 			Drawable drawable = getResources().getDrawable( R.drawable.gray_progress );
 			drawable.setBounds( 0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight() );
 			seekBar.setThumb( drawable );
-			try
-			{
-				if( player != null )
-				{
-					player.stop();
-					player.release();
-					player = null;
-				}
-			}
-			catch( Exception ex ) {}
 		}
 	}
 	
@@ -386,22 +328,34 @@ public class QuestionInfoActivity extends Activity
 		}
 	}
 	
+	public void onPause()
+	{
+		super.onPause();
+		isShowing = false;
+	}
+	
+	public void onResume()
+	{
+		super.onResume();
+		isShowing = true;
+		if( isPlaying == false )
+		{
+			stopPlay();
+		}
+	}
+	
 	public boolean onKeyDown( int keyCode, KeyEvent event )
 	{
 		if( keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0 )
 		{
 			if( entity.getVoiceCount() != 0 )
 			{
-				try
+				GuideActivity.myService.stopProPlay();
+				if( timer != null )
 				{
-					if( player != null )
-					{
-						player.stop();
-						player.release();
-						player = null;
-					}
+					timer.cancel();
+					timer = null;
 				}
-				catch( Exception ex ){}
 			}
 			setResult( 100 );
 			finish();

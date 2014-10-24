@@ -12,7 +12,6 @@ import android.widget.SeekBar;
 public class MySeekBar 
 {
 	public static MediaPlayer proPlayer = null;
-	public static double progress = -2;
 	private Timer timer = null;
 	
 	@SuppressLint("UseSparseArrays")
@@ -50,13 +49,9 @@ public class MySeekBar
 			{
 				public void run()
 				{
-					if( GuideActivity.isProPlaying )
+					if( GuideActivity.isProPlaying && GuideActivity.isShowing )
 					{
-						progress = GuideActivity.myService.getProProgress();
-						if( GuideActivity.isShowing )
-						{
-							GuideActivity.handler.sendEmptyMessage( 8 );
-						}
+						GuideActivity.handler.sendEmptyMessage( 8 );
 					}
 				}
 			}
@@ -68,16 +63,7 @@ public class MySeekBar
 	{
 		if( GuideActivity.proPlayIndex != -1 && seekBarMap.get( GuideActivity.proPlayIndex ) != null )
 		{
-			seekBarMap.get( GuideActivity.proPlayIndex ).setProgress( ( int ) progress );
-		}
-	}
-	
-	public void cancelTimer()
-	{
-		if( timer != null )
-		{
-			timer.cancel();
-			timer = null;
+			seekBarMap.get( GuideActivity.proPlayIndex ).setProgress( ( int ) GuideActivity.myService.getProProgress() );
 		}
 	}
 }

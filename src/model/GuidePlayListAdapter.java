@@ -73,6 +73,8 @@ public class GuidePlayListAdapter extends BaseAdapter
 			
 			holder.line = ( View ) convertView.findViewById( R.id.guide_play_pro_list_item_line );
 			
+			holder.seekBar = ( SeekBar ) convertView.findViewById( R.id.guide_play_pro_list_item_seekbar );
+			
 			convertView.setTag( holder );
 		}
 		else
@@ -140,9 +142,10 @@ public class GuidePlayListAdapter extends BaseAdapter
 			}
 		);
 		
-		SeekBar seekBar = ( SeekBar ) convertView.findViewById( R.id.guide_play_pro_list_item_seekbar );		
-		seekBar.setClickable( true );
-		seekBar.setOnSeekBarChangeListener
+		holder.seekBar = ( SeekBar ) convertView.findViewById( R.id.guide_play_pro_list_item_seekbar );
+		holder.seekBar.setMax( entity.getLength() );
+		holder.seekBar.setClickable( true );
+		holder.seekBar.setOnSeekBarChangeListener
 		(
 			new OnSeekBarChangeListener()
 			{
@@ -152,11 +155,7 @@ public class GuidePlayListAdapter extends BaseAdapter
 				{
 					if( index == GuideActivity.proPlayIndex )
 					{
-						MySeekBar.getInstance().seekBarMap.get( GuideActivity.proPlayIndex ).setMax( GuideActivity.proPlayLength );
-//						/System.out.println( seekBar.getMax() + "ss" );
-						
-						MySeekBar.progress = seekBar.getProgress();
-						GuideActivity.myService.seekProPlay( ( int ) MySeekBar.progress );
+						GuideActivity.myService.seekProPlay( seekBar.getProgress() );
 						if( GuideActivity.isProPlaying == false )
 						{
 							GuideActivity.myService.pauseProPlay();
@@ -167,23 +166,22 @@ public class GuidePlayListAdapter extends BaseAdapter
 		);
 		if( index != GuideActivity.proPlayIndex )
 		{
-			seekBar.setProgress( 0 );
-			
-			seekBar.setProgressDrawable( context.getResources().getDrawable( R.drawable.seekbar_gray_bg ) );
+			holder.seekBar.setProgress( 0 );			
+			holder.seekBar.setProgressDrawable( context.getResources().getDrawable( R.drawable.seekbar_gray_bg ) );
 			
 			Drawable drawable = context.getResources().getDrawable( R.drawable.gray_progress );
 			drawable.setBounds( 0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight() );
-			seekBar.setThumb( drawable );
+			holder.seekBar.setThumb( drawable );
 		}
 		else
 		{
-			seekBar.setProgressDrawable( context.getResources().getDrawable( R.drawable.seekbar_orange ) );
+			holder.seekBar.setProgressDrawable( context.getResources().getDrawable( R.drawable.seekbar_orange ) );
 			
 			Drawable drawable = context.getResources().getDrawable( R.drawable.orange_progress );
 			drawable.setBounds( 0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight() );
-			seekBar.setThumb( drawable );
+			holder.seekBar.setThumb( drawable );
 		}
-		MySeekBar.getInstance().seekBarMap.put( index, seekBar );
+		MySeekBar.getInstance().seekBarMap.put( index, holder.seekBar );
 		
 		if( GuideActivity.proPlayIndex == index )
 		{
@@ -235,7 +233,7 @@ public class GuidePlayListAdapter extends BaseAdapter
 							temp.setBounds( 0, 0, ( int )( 20 * Information.ScreenDensity ), ( int )( 20 * Information.ScreenDensity ) );
 							button.setCompoundDrawables( temp, null, null, null );
 						}
-						GuideActivity.handler.sendEmptyMessage( 2 );
+						GuideActivity.handler.sendEmptyMessage( 1 );
 					}
 				}
 			);
@@ -256,5 +254,6 @@ public class GuidePlayListAdapter extends BaseAdapter
 		ImageButton playButton;
 		Button waitButton;
 		View line;
+		SeekBar seekBar;
 	}
 }

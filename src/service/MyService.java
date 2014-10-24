@@ -2,13 +2,15 @@ package service;
 
 import java.util.List;
 
-import model.MySeekBar;
-
 import util.Information;
 import util.Tool;
 import view.GuideActivity;
+import view.QuestionInfoActivity;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Binder;
@@ -25,12 +27,37 @@ public class MyService extends Service
 	private MediaPlayer proPlayer = null;
 	private String guideAudioUrl;
 	private String proAudioUrl;
+	
+	private AudioManager audioManager;
+	private OnAudioFocusChangeListener listener;
+	
+	private boolean isGuidePlay = false;
 	/**
 	 * 
 	 */
 	public void onCreate()
 	{
 		super.onCreate();
+		
+		audioManager = ( AudioManager ) getSystemService( Context.AUDIO_SERVICE );
+		listener = new OnAudioFocusChangeListener()
+		{
+			public void onAudioFocusChange( int focusChange ) 
+			{
+				System.out.println( focusChange );
+				if( focusChange == AudioManager.AUDIOFOCUS_GAIN )
+				{
+					System.out.println( "aa" );
+					goOnPlay();
+				}
+				else if( focusChange == AudioManager.AUDIOFOCUS_LOSS )
+				{
+					System.out.println( "bb" );
+					pauseAllPlay();
+				}
+			}
+		};
+		audioManager.requestAudioFocus( listener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN );
 		
 		guidePlayer = new MediaPlayer();
 		proPlayer = new MediaPlayer();
@@ -58,6 +85,57 @@ public class MyService extends Service
 	/**
 	 * 
 	 */
+	private void pauseAllPlay()
+	{
+		isGuidePlay = false;
+		
+		if( GuideActivity.isGuidePlaying )
+		{
+			isGuidePlay = true;
+			GuideActivity.isGuidePlaying = false;
+			pauseGuidePlay();
+			if( GuideActivity.isShowing )
+			{
+				GuideActivity.handler.sendEmptyMessage( 11 );
+			}
+		}
+		else if( GuideActivity.isProPlaying )
+		{
+			stopProPlay();
+			GuideActivity.isProPlaying = false;
+			GuideActivity.proPlayIndex = -1;
+			if( GuideActivity.isShowing )
+			{
+				GuideActivity.handler.sendEmptyMessage( 1 );
+			}
+		}
+		else if( QuestionInfoActivity.isPlaying )
+		{
+			stopProPlay();
+			QuestionInfoActivity.handler.sendEmptyMessage( 2 );
+		}
+	}
+	/**
+	 * 
+	 */
+	private void goOnPlay()
+	{
+		if( isGuidePlay )
+		{
+			GuideActivity.isProPlaying = false;
+			GuideActivity.proPlayIndex = -1;
+			if( GuideActivity.isShowing )
+			{
+				GuideActivity.handler.sendEmptyMessage( 1 );
+				GuideActivity.handler.sendEmptyMessage( 12 );
+			}
+			GuideActivity.isGuidePlaying = true;
+			startGuidePlay();
+		}
+	}
+	/**
+	 * 
+	 */
 	public IBinder onBind( Intent intent ) 
 	{
 		return new MyService.MyBinder();
@@ -75,6 +153,7 @@ public class MyService extends Service
 	public void onDestroy()
 	{
 		super.onDestroy();
+		audioManager.abandonAudioFocus( listener );
 		killGuidePlay();
 		killProPlay();
 	}
@@ -134,6 +213,11 @@ public class MyService extends Service
 	{
 		GuideActivity.isGuidePlaying = true;
 		
+		if( GuideActivity.isShowing )
+		{
+			GuideActivity.handler.sendEmptyMessage( 5 );
+		}
+		
 		if( GuideActivity.placeIndex < MuseumEntity.placeList.size() - 1 )
 		{			
 			GuideActivity.placeIndex ++;
@@ -151,16 +235,19 @@ public class MyService extends Service
 			GuideActivity.isGuidePlaying = false;
 			pauseGuidePlay();
 		}
-		if( GuideActivity.isShowing )
-		{
-			GuideActivity.handler.sendEmptyMessage( 5 );
-		}
 	}
 	/**
 	 * 
 	 */
 	public void playNextPro()
 	{
+		GuideActivity.isProPlaying = false;
+		if( QuestionInfoActivity.isPlaying )
+		{
+			QuestionInfoActivity.isPlaying = false;
+			QuestionInfoActivity.handler.sendEmptyMessage( 2 );
+			return;
+		}
 		judgeNextPro();
 	}
 	/**
@@ -175,14 +262,15 @@ public class MyService extends Service
 				playPro( j );
 				return;
 			}
+		GuideActivity.isProPlaying = false;
 		GuideActivity.proPlayIndex = -1;
-		MySeekBar.getInstance().cancelTimer();
 		if( GuideActivity.isShowing )
 		{
 			GuideActivity.handler.sendEmptyMessage( 1 );
+			GuideActivity.handler.sendEmptyMessage( 12 );
 		}
 		GuideActivity.isGuidePlaying = true;
-		GuideActivity.handler.sendEmptyMessage( 12 );
+		startGuidePlay();
 	}
 	/**
 	 * 
@@ -202,9 +290,6 @@ public class MyService extends Service
 		GuideActivity.proPlayMap.put( GuideActivity.proPlayIndex, false );
 		GuideActivity.isProPlaying = true;
 		GuideActivity.myService.playNewPro( Information.RootPath + MuseumEntity.ProMap.get( GuideActivity.partEntity.getTags()[ 0 ] ).get( GuideActivity.proPlayIndex ).getAudioUrl(), 0 );
-		GuideActivity.proPlayLength = MuseumEntity.ProMap.get( GuideActivity.partEntity.getTags()[ 0 ] ).get( GuideActivity.proPlayIndex ).getLength();
-		MySeekBar.getInstance().seekBarMap.get( GuideActivity.proPlayIndex ).setMax( GuideActivity.proPlayLength );
-		MySeekBar.getInstance().startTimer();
 		if( GuideActivity.isShowing )
 		{
 			GuideActivity.handler.sendEmptyMessage( 1 );
@@ -226,8 +311,17 @@ public class MyService extends Service
 	 */
 	public void updatePlace()
 	{
+		if( GuideActivity.isProPlaying )
+		{
+			GuideActivity.isProPlaying = false;
+			stopProPlay();
+			if( GuideActivity.isShowing )
+			{
+				GuideActivity.handler.sendEmptyMessage( 6 );
+			}
+		}
+		
 		GuideActivity.lock = true;
-		GuideActivity.guideProgress = 0;
 		GuideActivity.partIndex = 0;
 		GuideActivity.proPlayIndex = -1;
 		GuideActivity.placeEntity = GuideActivity.guideEntity.getPlaceList().get( GuideActivity.placeIndex );
@@ -249,11 +343,14 @@ public class MyService extends Service
 	 */
 	public void playNewGuide( String url, int progress )
 	{
-		guidePlayer.reset();
-		updateGuideAudioUrl( url );
-		prepareGuidePlay();
-		seekGuidePlay( progress );
-		startGuidePlay();
+		if( GuideActivity.isGuide )
+		{
+			guidePlayer.reset();
+			updateGuideAudioUrl( url );
+			prepareGuidePlay();
+			seekGuidePlay( progress );
+			startGuidePlay();
+		}
 	}
 	/**
 	 * 
@@ -296,14 +393,17 @@ public class MyService extends Service
 	 */
 	public void prepareGuidePlay()
 	{
-		try 
+		if( GuideActivity.isGuide )
 		{
-			guidePlayer.setDataSource( guideAudioUrl );
-			guidePlayer.prepare();
-		} 
-		catch( Exception ex ) 
-		{
-			ex.printStackTrace();
+			try 
+			{
+				guidePlayer.setDataSource( guideAudioUrl );
+				guidePlayer.prepare();
+			} 
+			catch( Exception ex ) 
+			{
+				ex.printStackTrace();
+			}
 		}
 	}
 	/**
@@ -326,15 +426,18 @@ public class MyService extends Service
 	 */
 	public void startGuidePlay()
 	{
-		if( guidePlayer != null )
+		if( GuideActivity.isGuide )
 		{
-			try
+			if( guidePlayer != null )
 			{
-				guidePlayer.start();
-			}
-			catch( Exception ex ) 
-			{
-				ex.printStackTrace();
+				try
+				{
+					guidePlayer.start();
+				}
+				catch( Exception ex ) 
+				{
+					ex.printStackTrace();
+				}
 			}
 		}
 	}
@@ -364,7 +467,10 @@ public class MyService extends Service
 		{
 			try
 			{
-				guidePlayer.pause();
+				if( guidePlayer.isPlaying() )
+				{
+					guidePlayer.pause();
+				}
 			}
 			catch( Exception ex ) 
 			{
@@ -381,7 +487,10 @@ public class MyService extends Service
 		{
 			try
 			{
-				proPlayer.pause();
+				if( proPlayer.isPlaying() )
+				{
+					proPlayer.pause();
+				}
 			}
 			catch( Exception ex ) 
 			{
@@ -398,7 +507,10 @@ public class MyService extends Service
 		{
 			try
 			{
-				guidePlayer.stop();
+				if( guidePlayer.isPlaying() )
+				{				
+					guidePlayer.stop();
+				}
 			}
 			catch( Exception ex ) 
 			{
@@ -415,7 +527,10 @@ public class MyService extends Service
 		{
 			try
 			{
-				proPlayer.stop();
+				if( proPlayer.isPlaying() )
+				{
+					proPlayer.stop();
+				}
 			}
 			catch( Exception ex ) 
 			{
@@ -428,13 +543,16 @@ public class MyService extends Service
 	 */
 	public void seekGuidePlay( int progress )
 	{
-		try
+		if( GuideActivity.isGuide && guidePlayer != null )
 		{
-			guidePlayer.seekTo( progress * 1000 );
-		}
-		catch( Exception ex ) 
-		{
-			ex.printStackTrace();
+			try
+			{
+				guidePlayer.seekTo( progress * 1000 );
+			}
+			catch( Exception ex ) 
+			{
+				ex.printStackTrace();
+			}
 		}
 	}
 	/**
@@ -442,13 +560,16 @@ public class MyService extends Service
 	 */
 	public void seekProPlay( int progress )
 	{
-		try
+		if( proPlayer != null )
 		{
-			proPlayer.seekTo( progress * 1000 );
-		}
-		catch( Exception ex ) 
-		{
-			ex.printStackTrace();
+			try
+			{
+				proPlayer.seekTo( progress * 1000 );
+			}
+			catch( Exception ex ) 
+			{
+				ex.printStackTrace();
+			}
 		}
 	}
 	/**
@@ -456,14 +577,36 @@ public class MyService extends Service
 	 */
 	public double getGuideProgress()
 	{
-		return guidePlayer.getCurrentPosition() / 1000.0;
+		if( guidePlayer != null )
+		{
+			try
+			{
+				return guidePlayer.getCurrentPosition() / 1000.0;
+			}
+			catch( Exception ex )
+			{
+				return 0;
+			}
+		}
+		return 0;
 	}
 	/**
 	 *  Get progress
 	 */
 	public double getProProgress()
 	{
-		return proPlayer.getCurrentPosition() / 1000.0;
+		if( proPlayer != null )
+		{
+			try
+			{
+				return proPlayer.getCurrentPosition() / 1000.0;
+			}
+			catch( Exception ex )
+			{
+				return 0;
+			}
+		}
+		return 0;
 	}
 	/**
 	 *  Binder
